@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config>
+  <luceneMatchVersion>${tests.luceneMatchVersion:LATEST}</luceneMatchVersion>
+  <!-- Set this to 'false' if you want solr to continue working after it has 
+       encountered an severe configuration error.  In a production environment, 
+       you may want solr to keep working even if one handler is mis-configured.
+
+       You may also set this to false using by setting the system property:
+         -Dsolr.abortOnConfigurationError=false
+     -->
+  <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
+
+  <!-- Used to specify an alternate directory to hold all index data
+       other than the default ./data under the Solr home.
+       If replication is in use, this should match the replication configuration. -->
+  <dataDir>${solr.data.dir:}</dataDir>
+
+  <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.RAMDirectoryFactory}"/>
+  
+  <indexConfig>
+    <lockType>single</lockType>
+    <useCompoundFile>${useCompoundFile:false}</useCompoundFile>
+  </indexConfig>
+  
+  <!--  Enables JMX if and only if an existing MBeanServer is found, use 
+      this if you want to configure JMX through JVM parameters. Remove
+      this to disable exposing Solr configuration and statistics to JMX.
+      
+    If you want to connect to a particular server, specify the agentId
+    e.g. <jmx agentId="myAgent" />
+    
+    If you want to start a new MBeanServer, specify the serviceUrl
+    e.g <jmx serviceurl="service:jmx:rmi:///jndi/rmi://localhost:9999/solr" />
+    
+    For more details see http://wiki.apache.org/solr/SolrJmx
+  -->
+  <jmx />
+
+  <!-- the default high-performance update handler -->
+  <updateHandler class="solr.DirectUpdateHandler2">
+
+    <!-- A prefix of "solr." for class names is an alias that
+         causes solr to search appropriate packages, including
+         org.apache.solr.(search|update|request|core|analysis)
+     -->
+
+    <!-- Perform a <commit/> automatically under certain conditions:
+         maxDocs - number of updates since last commit is greater than this
+         maxTime - oldest uncommited update (in ms) is this long ago
+    <autoCommit> 
+      <maxDocs>10000</maxDocs>
+      <maxTime>1000</maxTime> 
+    </autoCommit>
+    -->
+
+    <!-- The RunExecutableListener executes an external command.
+         exe - the name of the executable to run
+         dir - dir to use as the current working directory. default="."
+         wait - the calling thread waits until the executable returns. default="true"
+         args - the arguments to pass to the program.  default=nothing
+         env - environment variables to set.  default=nothing
+      -->
+    <!-- A postCommit event is fired after every commit or optimize command
+    <listener event="postCommit" class="solr.RunExecutableListener">
+      <str name="exe">solr/bin/snapshooter</str>
+      <str name="dir">.</str>
+      <bool name="wait">true</bool>
+      <arr name="args"> <str>arg1</str> <str>arg2</str> </arr>
+      <arr name="env"> <str>MYVAR=val1</str> </arr>
+    </listener>
+    -->
+    <!-- A postOptimize event is fired only after every optimize command, useful
+         in conjunction with index distribution to only distribute optimized indicies 
+    <listener event="postOptimize" class="solr.RunExecutableListener">
+      <str name="exe">snapshooter</str>
+      <str name="dir">solr/bin</str>
+      <bool name="wait">true</bool>
+    </listener>
+    -->
+
+  </updateHandler>
+
+
+  <query>
+    <!-- Maximum number of clauses in a boolean query... can affect
+        range or prefix queries that expand to big boolean
+        queries.  An exception is thrown if exceeded.  -->
+    <maxBooleanClauses>1024</maxBooleanClauses>
+
+    
+    <!-- Cache used by SolrIndexSearcher for filters (DocSets),
+         unordered sets of *all* documents that match a query.
+         When a new searcher is opened, its caches may be prepopulated
+         or "autowarmed" using data from caches in the old searcher.
+         autowarmCount is the number of items to prepopulate.  For LRUCache,
+         the autowarmed items will be the most recently accessed items.
+       Parameters:
+         class - the SolrCache implementation (currently only LRUCache)
+         size - the maximum number of entries in the cache
+         initialSize - the initial capacity (number of entries) of
+           the cache.  (seel java.util.HashMap)
+         autowarmCount - the number of entries to prepopulate from
+           and old cache.
+         -->
+    <filterCache
+      class="solr.LRUCache"
+      size="512"
+      initialSize="512"
+      autowarmCount="128"/>
+
+   <!-- queryResultCache caches results of searches - ordered lists of
+         document ids (DocList) based on a query, a sort, and the range
+         of documents requested.  -->
+    <queryResultCache
+      class="solr.LRUCache"
+      size="512"
+      initialSize="512"
+      autowarmCount="32"/>
+
+  <!-- documentCache caches Lucene Document objects (the stored fields for each document).
+       Since Lucene internal document ids are transient, this cache will not be autowarmed.  -->
+    <documentCache
+      class="solr.LRUCache"
+      size="512"
+      initialSize="512"
+      autowarmCount="0"/>
+
+    <!-- If true, stored fields that are not requested will be loaded lazily.
+
+    This can result in a significant speed improvement if the usual case is to
+    not load all stored fields, especially if the skipped fields are large compressed
+    text fields.
+    -->
+    <enableLazyFieldLoading>true</enableLazyFieldLoading>
+
+    <!-- Example of a generic cache.  These caches may be accessed by name
+         through SolrIndexSearcher.getCache(),cacheLookup(), and cacheInsert().
+         The purpose is to enable easy caching of user/application level data.
+         The regenerator argument should be specified as an implementation
+         of solr.search.CacheRegenerator if autowarming is desired.  -->
+    <!--
+    <cache name="myUserCache"
+      class="solr.LRUCache"
+      size="4096"
+      initialSize="1024"
+      autowarmCount="1024"
+      regenerator="org.mycompany.mypackage.MyRegenerator"
+      />
+    -->
+
+   <!-- An optimization that attempts to use a filter to satisfy a search.
+         If the requested sort does not include score, then the filterCache
+         will be checked for a filter matching the query. If found, the filter
+         will be used as the source of document ids, and then the sort will be
+         applied to that.
+    <useFilterForSortedQuery>true</useFilterForSortedQuery>
+   -->
+
+   <!-- An optimization for use with the queryResultCache.  When a search
+         is requested, a superset of the requested number of document ids
+         are collected.  For example, if a search for a particular query
+         requests matching documents 10 through 19, and queryWindowSize is 50,
+         then documents 0 through 49 will be collected and cached.  Any further
+         requests in that range can be satisfied via the cache.  -->
+    <queryResultWindowSize>50</queryResultWindowSize>
+    
+    <!-- Maximum number of documents to cache for any entry in the
+         queryResultCache. -->
+    <queryResultMaxDocsCached>200</queryResultMaxDocsCached>
+
+    <!-- This entry enables an int hash representation for filters (DocSets)
+         when the number of items in the set is less than maxSize.  For smaller
+         sets, this representation is more memory efficient, more efficient to
+         iterate over, and faster to take intersections.  -->
+    <HashDocSet maxSize="3000" loadFactor="0.75"/>
+
+    <!-- a newSearcher event is fired whenever a new searcher is being prepared
+         and there is a current searcher handling requests (aka registered). -->
+    <!-- QuerySenderListener takes an array of NamedList and executes a
+         local query request for each NamedList in sequence. -->
+    <listener event="newSearcher" class="solr.QuerySenderListener">
+      <arr name="queries">
+        <lst> <str name="q">solr</str> <str name="start">0</str> <str name="rows">10</str> </lst>
+        <lst> <str name="q">rocks</str> <str name="start">0</str> <str name="rows">10</str> </lst>
+        <lst><str name="q">static newSearcher warming query from solrconfig.xml</str></lst>
+      </arr>
+    </listener>
+
+    <!-- a firstSearcher event is fired whenever a new searcher is being
+         prepared but there is no current registered searcher to handle
+         requests or to gain autowarming data from. -->
+    <listener event="firstSearcher" class="solr.QuerySenderListener">
+      <arr name="queries">
+        <lst> <str name="q">fast_warm</str> <str name="start">0</str> <str name="rows">10</str> </lst>
+        <lst><str name="q">static firstSearcher warming query from solrconfig.xml</str></lst>
+      </arr>
+    </listener>
+
+    <!-- If a search request comes in and there is no current registered searcher,
+         then immediately register the still warming searcher and use it.  If
+         "false" then all requests will block until the first searcher is done
+         warming. -->
+    <useColdSearcher>false</useColdSearcher>
+
+    <!-- Maximum number of searchers that may be warming in the background
+      concurrently.  An error is returned if this limit is exceeded. Recommend
+      1-2 for read-only slaves, higher for masters w/o cache warming. -->
+    <maxWarmingSearchers>2</maxWarmingSearchers>
+
+  </query>
+
+  <!-- 
+    Let the dispatch filter handler /select?qt=XXX
+    handleSelect=true will use consistent error handling for /select and /update
+    handleSelect=false will use solr1.1 style error formatting
+    -->
+  <requestDispatcher handleSelect="true" >
+    <!--Make sure your system has some authentication before enabling remote streaming!  -->
+    <requestParsers enableRemoteStreaming="false" multipartUploadLimitInKB="2048" />
+        
+    <!-- Set HTTP caching related parameters (for proxy caches and clients).
+          
+         To get the behaviour of Solr 1.2 (ie: no caching related headers)
+         use the never304="true" option and do not specify a value for
+         <cacheControl>
+    -->
+    <!-- <httpCaching never304="true"> -->
+    <httpCaching lastModifiedFrom="openTime"
+                 etagSeed="Solr">
+       <!-- lastModFrom="openTime" is the default, the Last-Modified value
+            (and validation against If-Modified-Since requests) will all be
+            relative to when the current Searcher was opened.
+            You can change it to lastModFrom="dirLastMod" if you want the
+            value to exactly corrispond to when the physical index was last
+            modified.
+               
+            etagSeed="..." is an option you can change to force the ETag
+            header (and validation against If-None-Match requests) to be
+            differnet even if the index has not changed (ie: when making
+            significant changes to your config file)
+
+            lastModifiedFrom and etagSeed are both ignored if you use the
+            never304="true" option.
+       -->
+       <!-- If you include a <cacheControl> directive, it will be used to
+            generate a Cache-Control header, as well as an Expires header
+            if the value contains "max-age="
+               
+            By default, no Cache-Control header is generated.
+
+            You can use the <cacheControl> option even if you have set
+            never304="true"
+       -->
+       <!-- <cacheControl>max-age=30, public</cacheControl> -->
+    </httpCaching>
+  </requestDispatcher>
+  
+  
+  <!-- SEMATEXT COMMENT : In this example, Dismax handler is using DymReSearcher component. Because of that
+       Spellcheck component is also defined in last-components chain, at the beginning. If DymReSearcher isn't
+       supposed to execute on this search handler, remove dymReSeracher from last-components list. -->
+  <requestHandler name="dismax" class="solr.SearchHandler" >
+    <lst name="defaults">
+     <str name="defType">dismax</str>
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.01</float>
+     <str name="qf">
+       foo^5.0 bar
+     </str>
+     <str name="fl">*</str>
+     <int name="ps">4</int>
+     <str name="q.alt">*:*</str>
+     <str name="bf">ord(id)</str>
+    </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+      <str>dymReSearcher</str>
+    </arr>
+  </requestHandler>
+  
+  <requestHandler name="/update" class="solr.UpdateRequestHandler" />
+
+  <!-- SEMATEXT COMMENT : Definition of DymReSearcher component instance. This component may be used in multiple
+       search handler definitions. If DymReSearcher component shouldn't be used at all, remove this definition, as
+       well as all occurrences of this component in last-components lists of search handlers. -->
+  <searchComponent name="dymReSearcher" class="com.sematext.solr.handler.component.dym.DymReSearcher">
+    <int name="maxOriginalResults">0</int>
+    <int name="maxOriginalResultsToReturnResults">5</int>
+    <int name="suggestionsToReturn">5</int>
+    <int name="minResultsForAcceptableSuggestion">3</int>
+    <float name="minRequiredSuggestionRatio">0.0</float>
+  </searchComponent>
+
+  <!-- SEMATEXT COMMENT : In this example, Standard handler is using DymReSearcher component. Because of that
+       Spellcheck component is also defined in last-components chain, at the beginning. If DymReSearcher isn't
+       supposed to execute on this search handler, remove dymReSeracher from last-components list. -->      
+  <requestHandler name="standard" class="solr.SearchHandler" default="true">
+    <!-- default values for query parameters -->
+     <lst name="defaults">
+       <str name="echoParams">explicit</str>
+       <int name="rows">10</int>
+       <str name="fl">*</str>
+       <str name="spellcheck.onlyMorePopular">false</str>  <!-- omp = Only More Popular -->
+       <str name="spellcheck.extendedResults">false</str>  <!-- exr = Extended Results -->
+       <str name="spellcheck.count">5</str>  <!--  The number of suggestions to return -->
+       <str name="spellcheck.collate">true</str>
+     </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+      <str>dymReSearcher</str>
+    </arr>
+  </requestHandler>
+
+  <!-- SEMATEXT COMMENT : In this example, Standard handler is using DymReSearcher component configured to
+       use First Good Suggestion algorithm. Also, Spellcheck component has to be defined in last-components chain, 
+       at the beginning.  If DymReSearcher isn't supposed to execute on this search handler, remove dymReSeracher 
+       from last-components list.-->
+  <requestHandler name="standardGoodSuggestion" class="solr.SearchHandler">
+    <!-- default values for query parameters -->
+     <lst name="defaults">
+       <str name="echoParams">explicit</str>
+       <int name="rows">10</int>
+       <str name="fl">*</str>
+       <str name="spellcheck.onlyMorePopular">false</str>  <!-- omp = Only More Popular -->
+       <str name="spellcheck.extendedResults">false</str>  <!-- exr = Extended Results -->
+       <str name="spellcheck.count">5</str>  <!--  The number of suggestions to return -->
+       <str name="spellcheck.collate">true</str>
+     </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+      <str>dymReSearcherGoodSuggestion</str>
+    </arr>
+  </requestHandler>
+
+  <requestHandler name="standardSc" class="solr.SearchHandler" default="true">
+    <!-- default values for query parameters -->
+     <lst name="defaults">
+       <str name="echoParams">explicit</str>
+       <int name="rows">10</int>
+       <str name="fl">*</str>
+       <str name="spellcheck.onlyMorePopular">false</str>  <!-- omp = Only More Popular -->
+       <str name="spellcheck.extendedResults">false</str>  <!-- exr = Extended Results -->
+       <str name="spellcheck.count">10</str>  <!--  The number of suggestions to return -->
+       <str name="spellcheck.collate">true</str>
+     </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
+  </requestHandler>
+  
+  <!-- SEMATEXT COMMENT : In this example, Standard handler is using DymReSearcher component. Because of that
+       Spellcheck component is also defined in last-components chain, at the beginning. If DymReSearcher isn't
+       supposed to execute on this search handler, remove dymReSeracher from last-components list. -->      
+  <requestHandler name="standardRes" class="solr.SearchHandler" default="true">
+    <!-- default values for query parameters -->
+     <lst name="defaults">
+       <str name="echoParams">explicit</str>
+       <int name="rows">10</int>
+       <str name="fl">*</str>
+       <str name="spellcheck.onlyMorePopular">false</str>  <!-- omp = Only More Popular -->
+       <str name="spellcheck.extendedResults">false</str>  <!-- exr = Extended Results -->
+       <str name="spellcheck.count">10</str>  <!--  The number of suggestions to return -->
+       <str name="spellcheck.collate">true</str>
+     </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+      <str>dymReSearcher</str>
+    </arr>
+  </requestHandler>
+  
+  <!-- SEMATEXT COMMENT : In this example, Standard handler is using DymReSearcher component configured to
+       ignore original SC's collation. Also, Spellcheck component has to be defined in last-components chain, 
+       at the beginning.  If DymReSearcher isn't supposed to execute on this search handler, remove dymReSeracher 
+       from last-components list.-->
+  <requestHandler name="standardIgnoreCollation" class="solr.SearchHandler">
+    <!-- default values for query parameters -->
+     <lst name="defaults">
+       <str name="echoParams">explicit</str>
+       <int name="rows">10</int>
+       <str name="fl">*</str>
+       <str name="spellcheck.onlyMorePopular">false</str>  <!-- omp = Only More Popular -->
+       <str name="spellcheck.extendedResults">false</str>  <!-- exr = Extended Results -->
+       <str name="spellcheck.count">5</str>  <!--  The number of suggestions to return -->
+       <str name="spellcheck.collate">true</str>
+     </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+      <str>dymReSearcherIgnoreCollation</str>
+    </arr>
+  </requestHandler>
+
+  <!-- SEMATEXT COMMENT : In this example, Dismax handler is using DymReSearcher component. Because of that
+       Spellcheck component is also defined in last-components chain, at the beginning. If DymReSearcher isn't
+       supposed to execute on this search handler, remove dymReSeracher from last-components list. -->
+  <requestHandler name="dismax" class="solr.SearchHandler" >
+    <lst name="defaults">
+     <str name="defType">dismax</str>
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.01</float>
+     <str name="qf">
+       foo^5.0 bar
+     </str>
+     <str name="fl">*</str>
+     <int name="ps">4</int>
+     <str name="q.alt">*:*</str>
+     <str name="bf">ord(id)</str>
+    </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+      <str>dymReSearcher</str>
+    </arr>
+  </requestHandler>
+
+  <!-- SEMATEXT COMMENT : Definition of DymReSearcher component instance. This component may be used in multiple
+       search handler definitions. If DymReSearcher component shouldn't be used at all, remove this definition, as
+       well as all occurrences of this component in last-components lists of search handlers. -->
+  <searchComponent name="dymReSearcher" class="com.sematext.solr.handler.component.dym.DymReSearcher">
+    <int name="maxOriginalResults">0</int>
+    <int name="maxOriginalResultsToReturnResults">5</int>
+    <int name="suggestionsToReturn">5</int>
+    <int name="minResultsForAcceptableSuggestion">3</int>
+    <float name="minRequiredSuggestionRatio">0.0</float>
+  </searchComponent>
+  
+  <!-- SEMATEXT COMMENT : Definition of DymReSearcher component instance which uses First Good Suggestion
+       algorithm. This component may be used in multiple search handler definitions. If DymReSearcher component 
+       shouldn't be used at all, remove this definition, as well as all occurrences of this component in
+       last-components lists of search handlers. -->      
+  <searchComponent name="dymReSearcherGoodSuggestion" class="com.sematext.solr.handler.component.dym.DymReSearcher">
+    <int name="maxOriginalResults">0</int>
+    <int name="maxOriginalResultsToReturnResults">5</int>
+    <int name="suggestionsToReturn">5</int>
+    <int name="minResultsForAcceptableSuggestion">3</int>
+    <int name="minResultsForGoodFgsSuggestion">6</int>
+    <int name="maxSuggestionsToTryForFgs">2</int>
+    <float name="minRequiredSuggestionRatio">0.0</float>
+  </searchComponent>
+
+  <!-- SEMATEXT COMMENT : Definition of DymReSearcher component instance which uses First Good Suggestion
+       algorithm and uses a definition of common misspellings file to improve the quality of suggestions. This component
+       may be used in multiple search handler definitions. If DymReSearcher component shouldn't be used at all, remove this definition, 
+       as well as all occurrences of this component inlast-components lists of search handlers. -->      
+  <searchComponent name="dymReSearcherWithCommonMisspellingsFile" class="com.sematext.solr.handler.component.dym.DymReSearcher">
+    <str name="commonMisspellingsFile">./solr/collection1/conf/common_misspellings_en_test.txt</str>
+    <int name="maxOriginalResults">0</int>
+    <int name="maxOriginalResultsToReturnResults">5</int>
+    <int name="suggestionsToReturn">5</int>
+    <int name="minResultsForAcceptableSuggestion">3</int>
+    <int name="minResultsForGoodFgsSuggestion">6</int>
+    <int name="maxSuggestionsToTryForFgs">2</int>
+    <float name="minRequiredSuggestionRatio">0.0</float>
+  </searchComponent>
+
+  <!-- SEMATEXT COMMENT : Definition of DymReSearcher component instance. This component may be used in multiple
+       search handler definitions. If DymReSearcher component shouldn't be used at all, remove this definition, as
+       well as all occurrences of this component in last-components lists of search handlers. -->
+  <searchComponent name="dymReSearcherIgnoreCollation" class="com.sematext.solr.handler.component.dym.DymReSearcher">
+    <bool name="ignoreCollation">true</bool>
+    <int name="maxOriginalResults">0</int>
+    <int name="maxOriginalResultsToReturnResults">5</int>
+    <int name="suggestionsToReturn">5</int>
+    <int name="minResultsForAcceptableSuggestion">3</int>
+    <float name="minRequiredSuggestionRatio">0.0</float>
+  </searchComponent>
+
+  <!-- SEMATEXT COMMENT : In this example, Standard handler is using DymReSearcher component with common misspelling file. 
+       Because of that, Spellcheck component is also defined in last-components chain, at the beginning. If DymReSearcher isn't
+       supposed to execute on this search handler, remove dymReSeracher from last-components list. -->      
+  <requestHandler name="standardResWithCommonMisspellings" class="solr.SearchHandler" default="true">
+    <!-- default values for query parameters -->
+     <lst name="defaults">
+       <str name="echoParams">explicit</str>
+       <int name="rows">10</int>
+       <str name="fl">*</str>
+       <str name="spellcheck.onlyMorePopular">false</str>  <!-- omp = Only More Popular -->
+       <str name="spellcheck.extendedResults">false</str>  <!-- exr = Extended Results -->
+       <str name="spellcheck.count">10</str>  <!--  The number of suggestions to return -->
+       <str name="spellcheck.collate">true</str>
+     </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+      <str>dymReSearcherWithCommonMisspellingsFile</str>
+    </arr>
+  </requestHandler>
+
+  <!-- SEMATEXT COMMENT : In this example, we allow original query to have some results and still want to get
+       spellchecking suggestions.  Standard handler is using DymReSearcher component configured to
+       use First Good Suggestion algorithm. Also, Spellcheck component has to be defined in last-components chain, 
+       at the beginning.  If DymReSearcher isn't supposed to execute on this search handler, remove dymReSeracher 
+       from last-components list.-->
+  <searchComponent name="dymResAllowSomeOriginalResults" class="com.sematext.solr.handler.component.dym.DymReSearcher">
+    <int name="maxOriginalResults">2</int>
+    <int name="maxOriginalResultsToReturnResults">5</int>
+    <int name="suggestionsToReturn">5</int>
+    <int name="minResultsForAcceptableSuggestion">3</int>
+    <int name="minResultsForGoodFgsSuggestion">3</int>
+    <int name="maxSuggestionsToTryForFgs">2</int>
+    <float name="minRequiredSuggestionRatio">0.0</float>
+  </searchComponent>
+
+  <searchComponent name="facet"     class="org.apache.solr.handler.component.FacetComponent" />
+
+  <!--
+   Search components are registered to SolrCore and used by Search Handlers
+   
+   By default, the following components are avaliable:
+    
+   <searchComponent name="query"     class="org.apache.solr.handler.component.QueryComponent" />
+   <searchComponent name="facet"     class="org.apache.solr.handler.component.FacetComponent" />
+   <searchComponent name="mlt"       class="org.apache.solr.handler.component.MoreLikeThisComponent" />
+   <searchComponent name="highlight" class="org.apache.solr.handler.component.HighlightComponent" />
+   <searchComponent name="debug"     class="org.apache.solr.handler.component.DebugComponent" />
+
+   Default configuration in a requestHandler would look like:
+    <arr name="components">
+      <str>query</str>
+      <str>facet</str>
+      <str>mlt</str>
+      <str>highlight</str>
+      <str>debug</str>
+    </arr>
+
+    If you register a searchComponent to one of the standard names, that will be used instead.
+    To insert handlers before or after the 'standard' components, use:
+    
+    <arr name="first-components">
+      <str>myFirstComponentName</str>
+    </arr>
+    
+    <arr name="last-components">
+      <str>myLastComponentName</str>
+    </arr>
+  -->
+
+   <!-- The spell check component can return a list of alternative spelling
+  suggestions.  -->
+  <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
+    <!-- 
+    <lst name="spellchecker">
+      <str name="classname">solr.FileBasedSpellChecker</str>
+      <str name="name">default</str>
+      <str name="sourceLocation">/tmp/spell_dict.txt</str>
+      <str name="characterEncoding">UTF-8</str>
+      <str name="spellcheckIndexDir">./spellcheckerFile</str>
+    </lst>
+    -->
+    <str name="queryAnalyzerFieldType">textSpell</str>
+    <lst name="spellchecker">
+      <str name="name">default</str>
+      <str name="field">spellchecker_field</str>
+      <str name="spellcheckIndexDir">./spellchecker</str>
+    </lst>
+    <lst name="spellchecker">
+      <str name="name">levenstein</str>
+      <str name="accuracy">0.5</str>
+      <str name="field">spellchecker_field</str>
+      <str name="distanceMeasure">org.apache.lucene.search.spell.LevensteinDistance</str>
+      <str name="spellcheckIndexDir">./spellchecker-levenstein</str>
+    </lst>
+    <lst name="spellchecker">
+      <str name="name">ngram</str>
+      <str name="accuracy">0.5</str>
+      <str name="field">spellchecker_field</str>
+      <!-- str name="distanceMeasure">org.apache.lucene.search.spell.NGramDistance</str-->
+      <str name="spellcheckIndexDir">./spellchecker-ngram</str>
+    </lst>
+    <lst name="spellchecker">
+      <str name="name">jw</str>
+      <str name="accuracy">0.5</str>
+      <str name="field">spellchecker_field</str>
+      <str name="distanceMeasure">org.apache.lucene.search.spell.JaroWinklerDistance</str>
+      <str name="spellcheckIndexDir">./spellchecker-jw</str>
+    </lst>
+  </searchComponent>
+
+  <!-- SEMATEXT COMMENT : In this example, we allow original query to have some results and still want to get
+       spellchecking suggestions. Standard handler is using DymReSearcher component configured to
+       use First Good Suggestion algorithm. Also, Spellcheck component has to be defined in last-components chain, 
+       at the beginning.  If DymReSearcher isn't supposed to execute on this search handler, remove dymReSeracher 
+       from last-components list.-->
+  <requestHandler name="standardGoodSuggestionAllowSomeOriginalResults" class="solr.SearchHandler">
+    <!-- default values for query parameters -->
+     <lst name="defaults">
+       <str name="echoParams">explicit</str>
+       <int name="rows">10</int>
+       <str name="fl">*</str>
+       <str name="spellcheck.onlyMorePopular">false</str>  <!-- omp = Only More Popular -->
+       <str name="spellcheck.extendedResults">false</str>  <!-- exr = Extended Results -->
+       <str name="spellcheck.count">5</str>  <!--  The number of suggestions to return -->
+       <str name="spellcheck.collate">true</str>
+     </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+      <str>dymResAllowSomeOriginalResults</str>
+      <!-- facet component has to be enabled here since this handler is also used to test results of faceting on original query -->
+      <str>facet</str>
+    </arr>
+  </requestHandler>
+
+   <!-- The spell check component can return a list of alternative spelling
+  suggestions.  -->
+  <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
+    <!-- 
+    <lst name="spellchecker">
+      <str name="classname">solr.FileBasedSpellChecker</str>
+      <str name="name">default</str>
+      <str name="sourceLocation">/tmp/spell_dict.txt</str>
+      <str name="characterEncoding">UTF-8</str>
+      <str name="spellcheckIndexDir">./spellcheckerFile</str>
+    </lst>
+    -->
+    <str name="queryAnalyzerFieldType">textSpell</str>
+    <lst name="spellchecker">
+      <str name="name">default</str>
+      <str name="field">spellchecker_field</str>
+      <str name="spellcheckIndexDir">./spellchecker</str>
+    </lst>
+    <lst name="spellchecker">
+      <str name="name">levenstein</str>
+      <str name="accuracy">0.5</str>
+      <str name="field">spellchecker_field</str>
+      <str name="distanceMeasure">org.apache.lucene.search.spell.LevensteinDistance</str>
+      <str name="spellcheckIndexDir">./spellchecker-levenstein</str>
+    </lst>
+    <lst name="spellchecker">
+      <str name="name">ngram</str>
+      <str name="accuracy">0.5</str>
+      <str name="field">spellchecker_field</str>
+      <!-- str name="distanceMeasure">org.apache.lucene.search.spell.NGramDistance</str-->
+      <str name="spellcheckIndexDir">./spellchecker-ngram</str>
+    </lst>
+    <lst name="spellchecker">
+      <str name="name">jw</str>
+      <str name="accuracy">0.5</str>
+      <str name="field">spellchecker_field</str>
+      <str name="distanceMeasure">org.apache.lucene.search.spell.JaroWinklerDistance</str>
+      <str name="spellcheckIndexDir">./spellchecker-jw</str>
+    </lst>
+  </searchComponent>
+
+</config>
+

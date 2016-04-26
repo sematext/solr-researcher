@@ -1,0 +1,1 @@
+Empty /solr/conf directory might be required in the root of the project to run unit tests from Eclipse or mvn.

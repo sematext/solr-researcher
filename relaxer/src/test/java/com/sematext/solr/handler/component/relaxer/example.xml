@@ -1,0 +1,40 @@
+<response>
+	<lst name="responseHeader">
+		<int name="status">0</int>
+		<int name="QTime">57067</int>
+		<lst name="params">
+			<str name="qt">dismax_relaxer</str>
+			<str name="q">bobo marley wailers</str>
+			<str name="queryRelaxer">true</str>
+		</lst>
+	</lst>
+	<result name="response" numFound="0" start="0" />
+	<result name="relaxer_response" numFound="3" start="0">
+		<doc>
+			<str name="foo">bob marley &amp; the wailers 3</str>
+			<str name="id">8</str>
+			<arr name="spellchecker_field">
+				<str>bob marley &amp; the wailers 3</str>
+			</arr>
+		</doc>
+		<doc>
+			<str name="foo">bob marley &amp; the wailers 2</str>
+			<str name="id">7</str>
+			<arr name="spellchecker_field">
+				<str>bob marley &amp; the wailers 2</str>
+			</arr>
+		</doc>
+		<doc>
+			<str name="foo">bob marley &amp; the wailers</str>
+			<str name="id">5</str>
+			<arr name="spellchecker_field">
+				<str>bob marley &amp; the wailers</str>
+			</arr>
+		</doc>
+	</result>
+	<arr name="relaxer_suggestions">
+		<str>marley wailers</str>
+		<str>bobo wailers</str>
+		<str>bobo marley</str>
+	</arr>
+</response>

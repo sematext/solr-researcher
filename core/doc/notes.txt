@@ -1,0 +1,23 @@
+results=0
+
+* then solr should run again to provide results for the most likely
+  spelling suggestion
+* basically, the user should be told that there were zero
+  results... did they mean "yada yada@, if so the results for this are
+  shown below
+* they should also be given the next 4 spelling results to choose, if
+  they want to (the 4 should be a criteria that we can adjust in the
+  future)
+
+results >0 and <5
+
+* show the actual results ONLY (i.e. do not show any results for the
+  spelling suggestions alongside the original results)
+* give the user 5 other options in terms of spelling
+
+results >5
+
+* show results
+* do not show spelling options
+* (for Rev 4, we would show popular results by category, but we are
+  not doing it at this stage)

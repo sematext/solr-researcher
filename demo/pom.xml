@@ -1,0 +1,68 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.sematext.solr</groupId>
+    <artifactId>st-ReSearcher-parent</artifactId>
+    <version>1.11.4.6.2-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>st-ReSearcher-demo</artifactId>
+  <packaging>war</packaging>
+  <name>ReSearcher Demo</name>
+  <description/>
+
+  <build>
+    <plugins>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.sematext.solr</groupId>
+      <artifactId>st-ReSearcher-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sematext.solr</groupId>
+      <artifactId>st-ReSearcher-dym</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sematext.solr</groupId>
+      <artifactId>st-ReSearcher-relaxer</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+    </dependency> 
+
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>default</id>
+      <url>http://repo1.maven.org/maven2/</url>
+    </repository>
+    <repository>
+      <id>apache_dev_repo</id>
+      <url>http://repository.apache.org/snapshots</url>
+    </repository>
+    <!-- mvn repo for Solr's nightly build versions -->
+    <repository>
+      <id>lucene-jenkins-trunk</id>
+      <name>Lucene jenkins trunk</name>
+      <url>https://builds.apache.org/job/Lucene-Solr-Maven-trunk/lastSuccessfulBuild/artifact/maven_artifacts</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>    
+  </repositories>
+
+</project>

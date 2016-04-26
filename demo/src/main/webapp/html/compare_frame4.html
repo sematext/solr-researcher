@@ -1,0 +1,25 @@
+<html>
+<head>
+<META HTTP-EQUIV="Expires" CONTENT="-1">
+<title>Sematext DYM ReSearcher vs. Raw Solr Spellchecker</title>
+
+<script type="text/javascript"> 
+function runQuery() {
+  top.frsc.document.getElementById("query").value=document.getElementById("query").value;
+  top.frres.document.getElementById("query").value=document.getElementById("query").value;
+  top.frsc.document.formSc.submit();
+  top.frres.document.formRes.submit();
+}
+</script> 
+</head>
+
+Enter a query with a slightly misspelled term:
+<input type="text" name="query" id="query"/>
+<input name="button" type="button" value="Search" onclick="runQuery();">
+
+<head>
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+</head>
+
+</html>
+ 
