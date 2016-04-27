@@ -9,16 +9,16 @@ Query Relaxer implements functionality that can be seen, for instance, on Amazon
 2. **"bee gees greatest hits video"** (include quotes) – Amazon will show that there were no results and will offer 4 alternative searches, each without just 2 words. Relaxer would again offer the query without quotes (which probably makes more sense in this case than Amazon's suggestions which all exclude word 'video', since non-quoted query really returns a product which user was searching for) 
 3. **bee gees greatest hits video** (without quotes) – Amazon shows 1 result and 4 suggestions, each excluding 2 words from initial query. Relaxer's current heuristics would produce queries which omit just one word. So, Relaxer would return the only result which matches original query and also suggest query 'bee gees greatest hits' (without quotes) as the best alternative, since it returns the most results.
 
-Relaxer comes with three heuristic algorithms out of the box (RemoveAllQuotes and RemoveOneTokenFromPhrase for phrase queries and RemoveOneTerm for queries without quotes). It can also be easily customized by writing implementations of one specific interface: QueryRelaxerHeuristic.
+Relaxer comes with three heuristic algorithms out of the box (`RemoveAllQuotes` and `RemoveOneTokenFromPhrase` for phrase queries and `RemoveOneTerm` for queries without quotes). It can also be easily customized by writing implementations of one specific interface: `QueryRelaxerHeuristic`.
 
 ### How does it work?   
 Relaxer processes each query in 2 steps:
 
 1. Fixing of common language-specific misspellings – in case a client's query returned too few results, and Relaxer's property commonMisspellingsFile is defined in the configuration file (solrconfig.xml), Relaxer will first check if there are any common language misspellings. If there are, Relaxer will fix them according to the definition in the file and will use the corrected query from here on. If such query returns the satisfying number of results, that query and its results will be returned to the client application. Otherwise, Relaxer goes to step 2.
-2. Correcting query based on different heuristic methods. It differentiates between phrase and regular queries (without quotes) and uses different sets of heuristics for each of these types. Everything needed for its work is defined in solrconfig.xml. See later sections for details about heuristic methods and configuration.
+2. Correcting query based on different heuristic methods. It differentiates between phrase and regular queries (without quotes) and uses different sets of heuristics for each of these types. Everything needed for its work is defined in `solrconfig.xml`. See later sections for details about heuristic methods and configuration.
 
 ### Deployment
-Relaxer is packaged in two jar files (you can find them in zip package in directories /relaxer/target and /relaxer/target/dependencies). These files must be copied to the lib/ directory under SOLR_HOME in the Solr installation. Also, Relaxer component should be defined in solrconfig.xml, as show in the example below:
+Relaxer is packaged in two jar files (you can find them in zip package in directories `/relaxer/target` and `/relaxer/target/dependencies`). These files must be copied to the `lib/` directory under SOLR_HOME in the Solr installation. Also, Relaxer component should be defined in `solrconfig.xml`, as show in the example below:
 
 ```xml
 <searchComponent name="relaxerComponent"
@@ -34,26 +34,26 @@ Relaxer is packaged in two jar files (you can find them in zip package in direct
 </searchComponent>
 ```
 Configuration of Relaxer component consists of:
-* Property maxOriginalResults (Integer, default value is 0) - Relaxer will produce suggestions only in situations where original query returned <= maxOriginalResults results, otherwise it will assume suggestions are not needed.
-* Property minResultsForGoodFgsSuggestion (integer, default value is 0) - The minimal number of results one suggestion has to return to label it as a 'good' suggestion.
-* Property fieldAnalyzerMaps. You can specify a custom analyzer (config in schema.xml) to parse query intead of original field analyzer. 
-* Property phraseQueryHeuristics – a list of classes containing heuristics to be used on phrase queries (queries which contain one or more pairs of double-quotes). Currently, there are two such classes com.sematext.solr.handler.component.relaxer.heuristics.phrase.RemoveAllQuote s (this one is considered default in case no phrase heuristics are specified in configuration), and com.sematext.solr.handler.component.relaxer.heuristics.phrase.RemoveOneToken FromPhrase. It is easy to write custom implementations by implementing interface QueryRelaxerHeuristic which contains just one method - createSuggestions
-* Property regularQueryHeuristics - a list of classes containing heuristics to be used on non-phrase queries. Currently, there is only one such class (and it is a default value), com.sematext.solr.handler.component.relaxer.heuristics.regular.RemoveOneTerm. For custom implementations, the same interface should be implemented as for phraseQueryHeuristics.
+* Property `maxOriginalResults` (Integer, default value is 0) - Relaxer will produce suggestions only in situations where original query returned <= `maxOriginalResults` results, otherwise it will assume suggestions are not needed.
+* Property `minResultsForGoodFgsSuggestion` (integer, default value is 0) - The minimal number of results one suggestion has to return to label it as a 'good' suggestion.
+* Property `fieldAnalyzerMaps`. You can specify a custom analyzer (config in schema.xml) to parse query intead of original field analyzer. 
+* Property `phraseQueryHeuristics` – a list of classes containing heuristics to be used on phrase queries (queries which contain one or more pairs of double-quotes). Currently, there are two such classes `com.sematext.solr.handler.component.relaxer.heuristics.phrase.RemoveAllQuote` (this one is considered default in case no phrase heuristics are specified in configuration), and `com.sematext.solr.handler.component.relaxer.heuristics.phrase.RemoveOneToken` FromPhrase. It is easy to write custom implementations by implementing interface `QueryRelaxerHeuristic` which contains just one method - `createSuggestions`
+* Property `regularQueryHeuristics` - a list of classes containing heuristics to be used on non-phrase queries. Currently, there is only one such class (and it is a default value), `com.sematext.solr.handler.component.relaxer.heuristics.regular.RemoveOneTerm`. For custom implementations, the same interface should be implemented as for `phraseQueryHeuristics`.
 
 The following parameters can be used to control Relaxer and can be passed in the URL:
-* queryRelaxer (true|false): defines whether Relaxer should run for particular query or not
-* queryRelaxer.q: query to be used for Relaxer.  This is useful when the actual full query sent to Solr is complex and when the user-entered portion is hard or impossible to extract.  In such cases the user-entered query string can be specified in queryRelaxer.q parameter.
-* queryRelaxer.field: specified the field to act on; available in RemoveOnClause heuristic
-* queryRelaxer.preferFewerMatches (true|false): best suggestion usually has more search results, but in some case we prefer fewer result suggestions
-* queryRelaxer.rows (integer, default value is from “rows” core search param). The number of docs to be returned for each suggested relaxed query
+* `queryRelaxer` (true|false): defines whether Relaxer should run for particular query or not
+* `queryRelaxer.q`: query to be used for Relaxer.  This is useful when the actual full query sent to Solr is complex and when the user-entered portion is hard or impossible to extract.  In such cases the user-entered query string can be specified in queryRelaxer.q parameter.
+* `queryRelaxer.field`: specified the field to act on; available in `RemoveOnClause` heuristic
+* `queryRelaxer.preferFewerMatches` (true|false): best suggestion usually has more search results, but in some case we prefer fewer result suggestions
+* `queryRelaxer.rows` (integer, default value is from “rows” core search param). The number of docs to be returned for each suggested relaxed query
 queryRelaxer.rowsPerQuery (integer, default value 5): number of suggestions to return
-* queryRelaxer.longQueryTerms (integer, default value 5): the length expressed in the number of tokens beyond which a query will be considered long and thus relaxed via the mm param; available in RemoveOnClause heuristic
-* queryRelaxer.longQueryMM (a valid mm value): when a query is considered long, the original mm is relaxed by this parameter; available in RemoveOnClause heuristic
+* `queryRelaxer.longQueryTerms` (integer, default value 5): the length expressed in the number of tokens beyond which a query will be considered long and thus relaxed via the mm param; available in `RemoveOnClause` heuristic
+* `queryRelaxer.longQueryMM` (a valid mm value): when a query is considered long, the original mm is relaxed by this parameter; available in `RemoveOnClause` heuristic
 
 Complex queries that use sub-queries let one specify the field to “act on”.  Here are a few ways to do that in RemoveOneClause heuristic:
-* use queryRelaxer.field - Relaxer will work on all sub-queries that use the specified field
-* add signal relax=on to sub-query. For example: {!edismax qf=title v=”Analytics Software” relax=on} {!edismax qf=content v=”Analytics Software”}, relaxer will only relax the first sub-query
-* use queryRelaxer.q (similar to hl.q) - must be used with parameter dereferencing because Relaxer only relaxes queryRelaxer.q. For example: q={!edismax qf=title v=$relaxerQuery.q} {!edismax qf=content v=”Analytics Software”&queryRelaxer.q=Analytics Software
+* use `queryRelaxer.field` - Relaxer will work on all sub-queries that use the specified field
+* add signal `relax=on` to sub-query. For example: `{!edismax qf=title v=”Analytics Software” relax=on} {!edismax qf=content v=”Analytics Software”}`, relaxer will only relax the first sub-query
+* use `queryRelaxer.q` (similar to `hl.q`) - must be used with parameter dereferencing because Relaxer only relaxes `queryRelaxer.q`. For example: `q={!edismax qf=title v=$relaxerQuery.q} {!edismax qf=content v=”Analytics Software”&queryRelaxer.q=Analytics Software`
 
 One can define as many different search component configurations as needed, each under a different name. Once defined, a component needs to be added to the appropriate request handler. For instance:
 
@@ -73,9 +73,9 @@ One can define as many different search component configurations as needed, each
 ```
 
 ### How Relaxer creates suggestions?
-For each user's query sent to a request handler to which the Relaxer component is attached, Relaxer first checks if original query produced less than or equal to maxOriginalResults hits. If it did, Relaxer first checks if there were any “common language misspellings” in the query. If there are, it creates a new query which fixes them and executes such corrected query. If such query produces more than maxOriginalResults hits it returns it as a query suggestion along with the results. If there were no such misspellings, or if there were, but correction still wasn't good enough, it proceeds to step two. In this second step Relaxer checks if the query contained any phrases. If it did, Relaxer will invoke the chain of phraseQueryHeuristics algorithms and collect all their suggestions. If it didn't, Relaxer will invoke the chain of regularQueryHeuristics algorithms.
+For each user's query sent to a request handler to which the Relaxer component is attached, Relaxer first checks if original query produced less than or equal to `maxOriginalResults` hits. If it did, Relaxer first checks if there were any “common language misspellings” in the query. If there are, it creates a new query which fixes them and executes such corrected query. If such query produces more than `maxOriginalResults` hits it returns it as a query suggestion along with the results. If there were no such misspellings, or if there were, but correction still wasn't good enough, it proceeds to step two. In this second step Relaxer checks if the query contained any phrases. If it did, Relaxer will invoke the chain of `phraseQueryHeuristics` algorithms and collect all their suggestions. If it didn't, Relaxer will invoke the chain of `regularQueryHeuristics` algorithms.
 
-Once all query alternatives are collected, Relaxer tries each one of them and returns them ordered by number of hits under tag relaxer_suggestions. The query with most hits is at the top of the list and results for that query are provided under another tag, relaxer_response.
+Once all query alternatives are collected, Relaxer tries each one of them and returns them ordered by number of hits under tag `relaxer_suggestions`. The query with most hits is at the top of the list and results for that query are provided under another tag, `relaxer_response`.
 
 ### Fixing of common misspellings
 For information about fixing common misspellings, please refer to ReSearcher-common.pdf which describes functionality common to all Sematext's ReSearcher components.
@@ -116,12 +116,12 @@ The structure of both fields is the same as the structure of original fields (fa
 ### Out-of-the-box heuristic algorithms
 Class name | Phrase or regular query? | Description
 ---------- | ------------------------ | -----------
-RemoveAllQuotes | phrase | Removes all quotes from the phrase query. Such queries are relaxed compared to the original query and are, therefore, expected to yield more results.
-RemoveOneTokenFromPhrase | phrase | This heuristic creates N possible queries, where N is the number of words in the query. Each variations will omit just one word from the original query. All queries will be tried and the one with the most results will be returned. For instance, in case of a phrase query like (double quotes represent quotes from original query) : ' “harry potter” booj ', three suggestions will be created (only the third one will still contain the phrase): ' potter booj ', ' harry booj ' and ' “harry potter” '. The last one would most likely return the most results and would be returned as the suggested query.
-RemoveOneTerm | regular | This heuristic works exactly the same as RemoveOneTokenFromPhrase, but should be used only on regular queries, since it doesn't handle phrases.
-RemoveOneClause | regular & phrase | This heuristic works similar to RemoveOneTerm but with some additional improvements: it handles phrases and treats them as terms in RemoveOneTerm heuristic when relaxing. It allows tokenizer specification and supports boolean operators AND, OR, NOT.  It can also handle sub-queries. Long queries with many suggestion candidates can affect search performance, so this heuristic allows one to relax mm parameters for long queries.
+`RemoveAllQuotes` | phrase | Removes all quotes from the phrase query. Such queries are relaxed compared to the original query and are, therefore, expected to yield more results.
+`RemoveOneTokenFromPhrase` | phrase | This heuristic creates N possible queries, where N is the number of words in the query. Each variations will omit just one word from the original query. All queries will be tried and the one with the most results will be returned. For instance, in case of a phrase query like (double quotes represent quotes from original query) : ' “harry potter” booj ', three suggestions will be created (only the third one will still contain the phrase): ' potter booj ', ' harry booj ' and ' “harry potter” '. The last one would most likely return the most results and would be returned as the suggested query.
+`RemoveOneTerm` | regular | This heuristic works exactly the same as `RemoveOneTokenFromPhrase`, but should be used only on regular queries, since it doesn't handle phrases.
+`RemoveOneClause` | regular & phrase | This heuristic works similar to `RemoveOneTerm` but with some additional improvements: it handles phrases and treats them as terms in `RemoveOneTerm` heuristic when relaxing. It allows tokenizer specification and supports boolean operators AND, OR, NOT.  It can also handle sub-queries. Long queries with many suggestion candidates can affect search performance, so this heuristic allows one to relax mm parameters for long queries.
 
-All phrase heuristics are located in package com.sematext.solr.handler.component.relaxer.heuristics.phrase, while all regular query heuristics are in com.sematext.solr.handler.component.relaxer.heuristics.regular. Be sure to write full class name (including package name) in solrconfig.xml.
+All phrase heuristics are located in package `com.sematext.solr.handler.component.relaxer.heuristics.phrase`, while all regular query heuristics are in `com.sematext.solr.handler.component.relaxer.heuristics.regular`. Be sure to write full class name (including package name) in `solrconfig.xml`.
 
 ### Correction highlighting feature
 For information about Correction Highlighting Feature, please refer to ReSearcher-common.pdf which describes functionality common to all Sematext's ReSearcher components.
