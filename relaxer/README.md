@@ -14,7 +14,7 @@ Relaxer comes with three heuristic algorithms out of the box (`RemoveAllQuotes` 
 ### How does it work?   
 Relaxer processes each query in 2 steps:
 
-1. Fixing of common language-specific misspellings – in case a client's query returned too few results, and Relaxer's property commonMisspellingsFile is defined in the configuration file (solrconfig.xml), Relaxer will first check if there are any common language misspellings. If there are, Relaxer will fix them according to the definition in the file and will use the corrected query from here on. If such query returns the satisfying number of results, that query and its results will be returned to the client application. Otherwise, Relaxer goes to step 2.
+1. Fixing of common language-specific misspellings – in case a client's query returned too few results, and Relaxer's property commonMisspellingsFile is defined in the configuration file `solrconfig.xml`, Relaxer will first check if there are any common language misspellings. If there are, Relaxer will fix them according to the definition in the file and will use the corrected query from here on. If such query returns the satisfying number of results, that query and its results will be returned to the client application. Otherwise, Relaxer goes to step 2.
 2. Correcting query based on different heuristic methods. It differentiates between phrase and regular queries (without quotes) and uses different sets of heuristics for each of these types. Everything needed for its work is defined in `solrconfig.xml`. See later sections for details about heuristic methods and configuration.
 
 ### Deployment
@@ -42,13 +42,13 @@ Configuration of Relaxer component consists of:
 
 The following parameters can be used to control Relaxer and can be passed in the URL:
 * `queryRelaxer` (true|false): defines whether Relaxer should run for particular query or not
-* `queryRelaxer.q`: query to be used for Relaxer.  This is useful when the actual full query sent to Solr is complex and when the user-entered portion is hard or impossible to extract.  In such cases the user-entered query string can be specified in queryRelaxer.q parameter.
+* `queryRelaxer.q`: query to be used for Relaxer.  This is useful when the actual full query sent to Solr is complex and when the user-entered portion is hard or impossible to extract.  In such cases the user-entered query string can be specified in `queryRelaxer.q` parameter.
 * `queryRelaxer.field`: specified the field to act on; available in `RemoveOnClause` heuristic
 * `queryRelaxer.preferFewerMatches` (true|false): best suggestion usually has more search results, but in some case we prefer fewer result suggestions
-* `queryRelaxer.rows` (integer, default value is from “rows” core search param). The number of docs to be returned for each suggested relaxed query
+* `queryRelaxer.rows` (integer, default value is from `rows` core search param). The number of docs to be returned for each suggested relaxed query
 queryRelaxer.rowsPerQuery (integer, default value 5): number of suggestions to return
-* `queryRelaxer.longQueryTerms` (integer, default value 5): the length expressed in the number of tokens beyond which a query will be considered long and thus relaxed via the mm param; available in `RemoveOnClause` heuristic
-* `queryRelaxer.longQueryMM` (a valid mm value): when a query is considered long, the original mm is relaxed by this parameter; available in `RemoveOnClause` heuristic
+* `queryRelaxer.longQueryTerms` (integer, default value 5): the length expressed in the number of tokens beyond which a query will be considered long and thus relaxed via the `mm` param; available in `RemoveOnClause` heuristic
+* `queryRelaxer.longQueryMM` (a valid `mm` value): when a query is considered long, the original mm is relaxed by this parameter; available in `RemoveOnClause` heuristic
 
 Complex queries that use sub-queries let one specify the field to “act on”.  Here are a few ways to do that in RemoveOneClause heuristic:
 * use `queryRelaxer.field` - Relaxer will work on all sub-queries that use the specified field
@@ -81,7 +81,7 @@ Once all query alternatives are collected, Relaxer tries each one of them and re
 For information about fixing common misspellings, please refer to ReSearcher-common.pdf which describes functionality common to all Sematext's ReSearcher components.
 
 ### How to use Relaxer
-After Relaxer is correctly deployed and configured on your Solr server, you can start using it. The only mandatory parameter you'll have to provide in your query URLs to get correct results is queryRelaxer=true. In case it isn't provided, Relaxer component will not run.
+After Relaxer is correctly deployed and configured on your Solr server, you can start using it. The only mandatory parameter you'll have to provide in your query URLs to get correct results is `queryRelaxer=true`. In case it isn't provided, Relaxer component will not run.
 
 Relaxer works best with dismax request handler. The reason for this is the format of the queries which are sent to dismax handler (for instance, no field names, no logical operators), but it also works with standard handler.
 
@@ -98,7 +98,7 @@ If Relaxer finds any good query suggestions, it will return them in separate XML
 ```
 Multiple suggestions are possible, so in such cases you'll get multiple <str> elements. Suggestions will be ordered with best suggestions at the top.
 
-Results for best suggestion are returned like in field relaxer_response:
+Results for best suggestion are returned like in field `relaxer_response`:
 ```xml
 <arr name="relaxer_suggestions">
   <lst>
@@ -111,7 +111,7 @@ Results of the original query can be found, as usual, under <respose> tag, they 
 
 If you use faceting, group or highlighting in your queries, Relaxer will perform the same operations on the results of best suggestion. 
 
-The structure of both fields is the same as the structure of original fields (facet_counts and highlighting).
+The structure of both fields is the same as the structure of original fields (`facet_counts` and `highlighting`).
 
 ### Out-of-the-box heuristic algorithms
 Class name | Phrase or regular query? | Description
@@ -119,7 +119,7 @@ Class name | Phrase or regular query? | Description
 `RemoveAllQuotes` | phrase | Removes all quotes from the phrase query. Such queries are relaxed compared to the original query and are, therefore, expected to yield more results.
 `RemoveOneTokenFromPhrase` | phrase | This heuristic creates N possible queries, where N is the number of words in the query. Each variations will omit just one word from the original query. All queries will be tried and the one with the most results will be returned. For instance, in case of a phrase query like (double quotes represent quotes from original query) : ' “harry potter” booj ', three suggestions will be created (only the third one will still contain the phrase): ' potter booj ', ' harry booj ' and ' “harry potter” '. The last one would most likely return the most results and would be returned as the suggested query.
 `RemoveOneTerm` | regular | This heuristic works exactly the same as `RemoveOneTokenFromPhrase`, but should be used only on regular queries, since it doesn't handle phrases.
-`RemoveOneClause` | regular & phrase | This heuristic works similar to `RemoveOneTerm` but with some additional improvements: it handles phrases and treats them as terms in `RemoveOneTerm` heuristic when relaxing. It allows tokenizer specification and supports boolean operators AND, OR, NOT.  It can also handle sub-queries. Long queries with many suggestion candidates can affect search performance, so this heuristic allows one to relax mm parameters for long queries.
+`RemoveOneClause` | regular & phrase | This heuristic works similar to `RemoveOneTerm` but with some additional improvements: it handles phrases and treats them as terms in `RemoveOneTerm` heuristic when relaxing. It allows tokenizer specification and supports boolean operators AND, OR, NOT.  It can also handle sub-queries. Long queries with many suggestion candidates can affect search performance, so this heuristic allows one to relax `mm` parameters for long queries.
 
 All phrase heuristics are located in package `com.sematext.solr.handler.component.relaxer.heuristics.phrase`, while all regular query heuristics are in `com.sematext.solr.handler.component.relaxer.heuristics.regular`. Be sure to write full class name (including package name) in `solrconfig.xml`.
 
@@ -132,16 +132,16 @@ For information about using Relaxer with SolrJ, please refer to ReSearcher-commo
 ### Query Relaxer in distributed environment
 Query Relaxer works both in non-distributed (single node or simple master-slave) and distributed setup. If you are using SolrCloud, everything will work out-of-the-box automatically. There are no special parameters which should tell whether the setup is distributed or not. Also, there is only one version of Query Relaxer jar which knows how to work in all kinds of setups.
 
-If you are using “manually” configured distributed search (where you manually define “shards” parameter in your requests or in solrconfig.xml), few things may have to be adjusted:
-* make sure you properly use shards.qt parameter - if non-default search handler is used, you should mention its name with this parameter. If you already had a functional distributed setup before using Query Relaxer, chances are that you are already using shards.qt parameter in correct way and there is nothing to change related to this parameter
-* standard request handler (into whose chain Query Relaxer is added) shouldn’t have “shards” parameter defined in solrconfig (this is true regardless of Query Relaxer, because it can cause infinite recursion). If you are not using standard handler, your are most likely fine. Also, if you were already using this same handler in distributed setup, you are most likely fine too. If not, that means you can do one of the following:
-    * specify “shards” parameter in request sent to Solr (which is not practical in all cases)
-    * define a separate request handler in solrconfig for Query Relaxer. That separate request handler can be a copy of your original query handler in everything but “shards” parameter. Your client application would still send requests to your original request handler, but you would have to add shards.qt parameter with value which matches the name of request handler “copy”
+If you are using “manually” configured distributed search (where you manually define `shards` parameter in your requests or in `solrconfig.xml`), few things may have to be adjusted:
+* make sure you properly use `shards.qt` parameter - if non-default search handler is used, you should mention its name with this parameter. If you already had a functional distributed setup before using Query Relaxer, chances are that you are already using `shards.qt` parameter in correct way and there is nothing to change related to this parameter
+* standard request handler (into whose chain Query Relaxer is added) shouldn’t have `shards` parameter defined in solrconfig (this is true regardless of Query Relaxer, because it can cause infinite recursion). If you are not using standard handler, your are most likely fine. Also, if you were already using this same handler in distributed setup, you are most likely fine too. If not, that means you can do one of the following:
+    * specify `shards` parameter in request sent to Solr (which is not practical in all cases)
+    * define a separate request handler in solrconfig for Query Relaxer. That separate request handler can be a copy of your original query handler in everything but `shards` parameter. Your client application would still send requests to your original request handler, but you would have to add `shards.qt` parameter with value which matches the name of request handler “copy”
 
-  There is an exception to this case: if you have one aggregator shard sitting in front of N other shards, where aggregator is the only one receiving requests and the only one having “shards” parameter in its config, you can ignore this step. In that case, you need Relaxer configuration only on your aggregator shard, other sub-shards don’t need it.
+  There is an exception to this case: if you have one aggregator shard sitting in front of N other shards, where aggregator is the only one receiving requests and the only one having `shards` parameter in its config, you can ignore this step. In that case, you need Relaxer configuration only on your aggregator shard, other sub-shards don’t need it.
 
 ### HTTPS
-If solr is exposed through SSL, shardHandlerFactory configuration should be added to Relaxer search component:
+If solr is exposed through SSL, `shardHandlerFactory` configuration should be added to Relaxer search component:
 ```xml
 <searchComponent name="relaxerComponent"    class="com.sematext.solr.handler.component.relaxer.QueryRelaxerComponent">
     <int name="maxOriginalResults">0</int>
@@ -161,5 +161,5 @@ If solr is exposed through SSL, shardHandlerFactory configuration should be adde
 ### Limitations
 Currently, there are only a few limitations of Relaxer. One is the number of heuristic algorithms implemented by Sematext. This number will grow in the future, but the existing algorithms should satisfy most needs. If you have any specific requirements, implementing new heuristics is very easy and consists of implementing one interface and defining it in the configuration file.
 
-The other limitation is related to the format of queries sent to Solr. Any query whose terms contain spaces will be problematic, like range terms (for instance price:[10 TO 20]). This isn't true for regular phrase queries (“united states”), Relaxer works well with them.
+The other limitation is related to the format of queries sent to Solr. Any query whose terms contain spaces will be problematic, like range terms (for instance `price:[10 TO 20]`). This isn't true for regular phrase queries (`“united states”`), Relaxer works well with them.
 
