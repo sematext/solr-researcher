@@ -114,12 +114,12 @@ If you use faceting, group or highlighting in your queries, Relaxer will perform
 The structure of both fields is the same as the structure of original fields (facet_counts and highlighting).
 
 ### Out-of-the-box heuristic algorithms
-| Class name | Phrase or regular query? | Description  |
-| ------------- |:-------------:| -----:|
-| RemoveAllQuotes | phrase | Removes all quotes from the phrase query. Such queries are relaxed compared to the original query and are, therefore, expected to yield more results. |
-| RemoveOneTokenFromPhrase | phrase | This heuristic creates N possible queries, where N is the number of words in the query. Each variations will omit just one word from the original query. All queries will be tried and the one with the most results will be returned. For instance, in case of a phrase query like (double quotes represent quotes from original query) : ' “harry potter” booj ', three suggestions will be created (only the third one will still contain the phrase): ' potter booj ', ' harry booj ' and ' “harry potter” '. The last one would most likely return the most results and would be returned as the suggested query. |
-| RemoveOneTerm | regular | This heuristic works exactly the same as RemoveOneTokenFromPhrase, but should be used only on regular queries, since it doesn't handle phrases. |
-| RemoveOneClause | regular & phrase | This heuristic works similar to RemoveOneTerm but with some additional improvements: it handles phrases and treats them as terms in RemoveOneTerm heuristic when relaxing. It allows tokenizer specification and supports boolean operators AND, OR, NOT.  It can also handle sub-queries. Long queries with many suggestion candidates can affect search performance, so this heuristic allows one to relax mm parameters for long queries. |
+Class name | Phrase or regular query? | Description
+---------- | ------------------------ | -----------
+RemoveAllQuotes | phrase | Removes all quotes from the phrase query. Such queries are relaxed compared to the original query and are, therefore, expected to yield more results.
+RemoveOneTokenFromPhrase | phrase | This heuristic creates N possible queries, where N is the number of words in the query. Each variations will omit just one word from the original query. All queries will be tried and the one with the most results will be returned. For instance, in case of a phrase query like (double quotes represent quotes from original query) : ' “harry potter” booj ', three suggestions will be created (only the third one will still contain the phrase): ' potter booj ', ' harry booj ' and ' “harry potter” '. The last one would most likely return the most results and would be returned as the suggested query.
+RemoveOneTerm | regular | This heuristic works exactly the same as RemoveOneTokenFromPhrase, but should be used only on regular queries, since it doesn't handle phrases.
+RemoveOneClause | regular & phrase | This heuristic works similar to RemoveOneTerm but with some additional improvements: it handles phrases and treats them as terms in RemoveOneTerm heuristic when relaxing. It allows tokenizer specification and supports boolean operators AND, OR, NOT.  It can also handle sub-queries. Long queries with many suggestion candidates can affect search performance, so this heuristic allows one to relax mm parameters for long queries.
 
 All phrase heuristics are located in package com.sematext.solr.handler.component.relaxer.heuristics.phrase, while all regular query heuristics are in com.sematext.solr.handler.component.relaxer.heuristics.regular. Be sure to write full class name (including package name) in solrconfig.xml.
 
