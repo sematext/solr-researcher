@@ -1,6 +1,6 @@
 # solr-researcher
 
-The Solr ReSearcher has Solr components that can be used to improve users’ search experience. 
+The Solr ReSearcher has Solr components that can be used to improve user's search experience. 
 
   - Solr Query Relaxer
   - Solr DYM ReSearcher
