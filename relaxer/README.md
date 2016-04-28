@@ -86,14 +86,14 @@ After Relaxer is correctly deployed and configured on your Solr server, you can 
 Relaxer works best with dismax request handler. The reason for this is the format of the queries which are sent to dismax handler (for instance, no field names, no logical operators), but it also works with standard handler.
 
 Here are a few examples of queries:
-```html
+```
 http://localhost:8080/solr/select/?q=”blues%20brothers%20greatest%20hits %20album”&facet=true&facet.mincount=1&facet.field=foo&facet.field=bar&qt=dismax_relaxer&hl=true&queryRel axer=true&hl.res.replaced=b&hl.res.removed=strong
 ```
-```html
+```
 http://localhost:8080/solr/select/?q=Shinw on you crazy diamond&qt=dismax_relaxer&hl=true&queryRelaxer=true
 ```
 If Relaxer finds any good query suggestions, it will return them in separate XML element, for instance like this:
-```html
+```xml
 <arr name="relaxer_suggestions"> <str>shine on you crazy diamond</str> </arr>
 ```
 Multiple suggestions are possible, so in such cases you'll get multiple <str> elements. Suggestions will be ordered with best suggestions at the top.
