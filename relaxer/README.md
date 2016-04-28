@@ -78,7 +78,7 @@ For each user's query sent to a request handler to which the Relaxer component i
 Once all query alternatives are collected, Relaxer tries each one of them and returns them ordered by number of hits under tag `relaxer_suggestions`. The query with most hits is at the top of the list and results for that query are provided under another tag, `relaxer_response`.
 
 ### Fixing of common misspellings
-For information about fixing common misspellings, please refer to ReSearcher-common.pdf which describes functionality common to all Sematext's ReSearcher components.
+For information about fixing common misspellings, please refer to [ReSearcher-common](https://github.com/sematext/solr-researcher/tree/master/doc) which describes functionality common to all Solr ReSearcher components.
 
 ### How to use Relaxer
 After Relaxer is correctly deployed and configured on your Solr server, you can start using it. The only mandatory parameter you'll have to provide in your query URLs to get correct results is `queryRelaxer=true`. In case it isn't provided, Relaxer component will not run.
@@ -124,10 +124,10 @@ Class name | Phrase or regular query? | Description
 All phrase heuristics are located in package `com.sematext.solr.handler.component.relaxer.heuristics.phrase`, while all regular query heuristics are in `com.sematext.solr.handler.component.relaxer.heuristics.regular`. Be sure to write full class name (including package name) in `solrconfig.xml`.
 
 ### Correction highlighting feature
-For information about Correction Highlighting Feature, please refer to ReSearcher-common.pdf which describes functionality common to all Sematext's ReSearcher components.
+For information about Correction Highlighting Feature, please refer to ReSearcher-common.pdf which describes functionality common to all Solr ReSearcher components.
 
 ### Using Relaxer with SolrJ
-For information about using Relaxer with SolrJ, please refer to ReSearcher-common.pdf which describes functionality common to all Sematext's ReSearcher components.
+For information about using Relaxer with SolrJ, please refer to ReSearcher-common.pdf which describes functionality common to all Solr ReSearcher components.
 
 ### Query Relaxer in distributed environment
 Query Relaxer works both in non-distributed (single node or simple master-slave) and distributed setup. If you are using SolrCloud, everything will work out-of-the-box automatically. There are no special parameters which should tell whether the setup is distributed or not. Also, there is only one version of Query Relaxer jar which knows how to work in all kinds of setups.

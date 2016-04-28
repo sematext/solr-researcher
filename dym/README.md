@@ -111,7 +111,7 @@ There are two modes of work for DYM ReSearcher:
 Another important setting when using the FGS algorithm is `fgsModeFixedMinResults` . It defines what is needed for some suggestion to be considered as “good” and therefore suggested by this algorithm. In case it is set to true, suggestion must return at least `minResultsForGoodFgsSuggestion` hits to be returned by DYM ReSearcher.If it is set to false,then it has to produce at least((number of hits of original query+1)*2) results.
 
 ### Fixing of Common Misspellings
-For information about fixing common misspellings, please, refer to ReSearcher-common.pdf which describes functionality common to all Sematext's ReSearcher components.
+For information about fixing common misspellings, please, refer to [ReSearcher-common](https://github.com/sematext/solr-researcher/tree/master/doc) which describes functionality common to all Solr ReSearcher components.
 
 ### How DYM ReSearcher Creates Suggestions
 Original Solr Spellchecker provides possible suggestions for each term that might be found in the phrase. DYM ReSearcher finds the term in query with the highest number of possible corrections (meaning: the word which has the most likely corrections that occur more frequently than the word itself in the index). Such term is considered as most likely to be incorrectly spelled, so DYM ReSearcher will try to replace it. That term must satisfy `minRequiredSuggestionRatio` and `minRequiredSuggestionRatioForZeroHits` parameters from configuration (if using default values, these parameters are always satisfied). In case no terms satisfy these parameters, DYM ReSearcher will consider original query as good enough and it will not provide any suggestions. However, if there are such terms, the one with the highest number of possible corrections is chosen to create new query suggestions. By tweaking these values you can affect when a query term will be considered as incorrect.
@@ -187,10 +187,10 @@ The structure of both fields is the same as the structure of original fields (fa
 Dym ReSearcher requires that `q` parameter is present. Parameter `spellcheck.q` should not be used since it can trigger errors in some cases. If it is used, it must contain the same value as `q` parameter (or its lower/upper cased version).
 
 ### Correction Highlighting Feature
-For information about Correction Highlighting Feature, please refer to ReSearcher-common.pdf which describes functionality common to all Sematext's ReSearcher components.
+For information about Correction Highlighting Feature, please refer to ReSearcher-common.pdf which describes functionality common to all Solr ReSearcher components.
 
 ### Using DYM ReSearcher with SolrJ
-For information about using DYM ReSearcher with SolrJ, please refer to ReSearcher-common.pdf which describes functionality common to all Sematext's ReSearcher components.
+For information about using DYM ReSearcher with SolrJ, please refer to ReSearcher-common.pdf which describes functionality common to all Solr ReSearcher components.
 
 ### DYM ReSearcher in distributed environment
 DYM ReSearcher works both in non-distributed (single node or simple master-slave) and distributed setup. If you are using SolrCloud, everything will work out-of-the-box automatically. There are no special parameters which should tell whether the setup is distributed or not. Also, there is only one version of DYM ReSearcher jar which knows how to work in all kinds of setups.
