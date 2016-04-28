@@ -6,7 +6,7 @@ The Solr ReSearcher has Solr components that can be used to improve user's searc
 Currently, the Solr ReSearcher has two modules:
 * core – Common classes for other researcher component
 * relaxer – Query Relaxer is a Solr component that improves search experience. It executes alternative queries when it detects that original query produced poor results or no results at all due to being too restrictive. It transparently returns better search results to the client without the client having to restructure the query and send additional requests to Solr over the wire and re-examine the results.
-* dym – Sematext's DYM ReSearcher (aka Did You Mean ReSearcher) is a Solr component that improves search experience. It executes alternative queries when it detects that original queries produced poor results or no results at all due to spelling mistakes or typos. It transparently returns better search results to the client.
+* dym – Solr DYM ReSearcher (aka Did You Mean ReSearcher) is a Solr component that improves search experience. It executes alternative queries when it detects that original queries produced poor results or no results at all due to spelling mistakes or typos. It transparently returns better search results to the client.
 
 ### Usage
 Check usage for each component in thier own README.md
