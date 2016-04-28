@@ -9,7 +9,7 @@ Currently, the Solr ReSearcher has two modules:
 * dym – Solr DYM ReSearcher (aka Did You Mean ReSearcher) is a Solr component that improves search experience. It executes alternative queries when it detects that original queries produced poor results or no results at all due to spelling mistakes or typos. It transparently returns better search results to the client.
 
 ### Usage
-Check usage for each component in thier own README.md
+Check usage for each component in their own README.md
 * [Solr Query Relaxer](https://github.com/sematext/solr-researcher/tree/master/relaxer)
 * [Solr DYM ReSearcher](https://github.com/sematext/solr-researcher/tree/master/dym)
 
