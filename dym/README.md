@@ -136,12 +136,12 @@ DYM ReSearcher works best with dismax request handler. The reason for this is th
 
 Here are a few examples of queries:
 
-```html
+```
 http://localhost:8080/solr/select/?q=harry
 %20kotter&facet=true&facet.mincount=1&facet.field=foo&facet.field=bar&spellcheck=true&spellcheck.onlyMorePopular=true&spellcheck.count=20&spellcheck.extendedResults=true&qt=dismax_fgs&hl=true&DymReSearcher=true
 ```
 
-```html
+```
 http://localhost:8080/solr/select/?
 q=amerika&facet=true&facet.mincount=1&facet.field=foo&facet.field=bar&spellcheck=true&spellcheck.onlyMorePopular=true&spellcheck.count=20&spellcheck.extendedResults=true&qt=dismax_fgs&hl=true&hl.res.replaced=b&hl.res.removed=strike&DymReSearcher=true
 ```
