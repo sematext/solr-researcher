@@ -23,7 +23,7 @@ Check usage for each component in their own README.md
 Maven artifacts of ActionGenerator project are published at 
 https://oss.sonatype.org/content/repositories/snapshots/
 
-* To use ActionGenerator you should add the following dependency to your project:
+To use Solr ReSearcher you should add the following dependency to your project:
 
 ```xml
 <dependency>
@@ -32,7 +32,7 @@ https://oss.sonatype.org/content/repositories/snapshots/
   <version>1.12.5.2.0-SNAPSHOT</version>
 </dependency>`
 ```
-  or
+or
 
 ```xml
 <dependency>
