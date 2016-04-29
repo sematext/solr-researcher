@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/sematext/solr-researcher.svg?branch=master)](https://travis-ci.org/sematext/solr-researcher)
+
 # solr-researcher
 
 The Solr ReSearcher has Solr components that can be used to improve user's search experience. 
