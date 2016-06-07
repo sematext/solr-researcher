@@ -23,6 +23,7 @@ import java.io.IOException;
 import com.sematext.solr.handler.component.AbstractReSearcherComponent;
 import com.sematext.solr.handler.component.relaxer.query.RelaxerParams;
 
+@SolrTestCaseJ4.SuppressSSL
 public class TestQueryRelaxerComponent extends SolrTestCaseJ4 {
   @BeforeClass
   public static void beforeTests() throws Exception {

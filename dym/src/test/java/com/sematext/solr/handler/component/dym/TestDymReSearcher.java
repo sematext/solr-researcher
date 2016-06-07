@@ -14,6 +14,7 @@ import org.apache.solr.common.params.FacetParams;
 import org.apache.solr.common.params.HighlightParams;
 import org.apache.solr.common.params.SpellingParams;
 import org.apache.solr.handler.component.SpellCheckComponent;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -21,6 +22,7 @@ import java.io.IOException;
 
 import com.sematext.solr.handler.component.AbstractReSearcherComponent;
 
+@SolrTestCaseJ4.SuppressSSL
 public class TestDymReSearcher extends SolrTestCaseJ4 {
   @BeforeClass
   public static void beforeTests() throws Exception {
@@ -45,6 +47,11 @@ public class TestDymReSearcher extends SolrTestCaseJ4 {
     assertU(adoc("id", "13", "foo", "elvis 2"));
     
     assertU("commit", commit());
+  }
+  
+  @AfterClass
+  public static void afterClass() throws IOException {
+    h.getCore().getSearcher().get().close();
   }
   
   @Test

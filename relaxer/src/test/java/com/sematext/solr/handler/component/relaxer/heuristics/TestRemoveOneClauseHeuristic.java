@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 import com.sematext.solr.handler.component.relaxer.QueryRelaxerHeuristic;
 import com.sematext.solr.handler.component.relaxer.RelaxerSuggestion;
 
+@SolrTestCaseJ4.SuppressSSL
 public class TestRemoveOneClauseHeuristic extends SolrTestCaseJ4 {
   private QueryRelaxerHeuristic heuristic = null;
 

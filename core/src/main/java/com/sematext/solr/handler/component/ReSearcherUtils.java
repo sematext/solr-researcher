@@ -221,10 +221,10 @@ public class ReSearcherUtils {
     try {
       // first tokenize words and treat each quote as a separate token
       Map<String,String> args = new HashMap<String, String>();
-      args.put(WhitespaceTokenizerFactory.LUCENE_MATCH_VERSION_PARAM, Version.LUCENE_5_2_0.toString());
+      args.put(WhitespaceTokenizerFactory.LUCENE_MATCH_VERSION_PARAM, Version.LUCENE_6_0_0.toString());
       WhitespaceTokenizerFactory f = new WhitespaceTokenizerFactory(args);
       
-      WhitespaceTokenizer s = f.create(AttributeFactory.DEFAULT_ATTRIBUTE_FACTORY);
+      WhitespaceTokenizer s = (WhitespaceTokenizer)f.create(AttributeFactory.DEFAULT_ATTRIBUTE_FACTORY);
       s.setReader(new StringReader(queryString));
       s.reset();
       

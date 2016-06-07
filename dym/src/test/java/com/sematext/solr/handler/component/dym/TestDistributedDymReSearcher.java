@@ -8,23 +8,51 @@
  */
 package com.sematext.solr.handler.component.dym;
 
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.util.LuceneTestCase.AwaitsFix;
+import org.apache.lucene.util.LuceneTestCase.Slow;
 import org.apache.solr.BaseDistributedSearchTestCase;
 import org.apache.solr.SolrTestCaseJ4.SuppressSSL;
 import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.common.params.ShardParams;
 import org.apache.solr.common.params.SpellingParams;
 import org.apache.solr.handler.component.SpellCheckComponent;
+import org.apache.solr.search.SolrIndexSearcher;
+import org.junit.AfterClass;
 import org.junit.Test;
 
+import java.io.IOException;
+
 @SuppressSSL
+@Slow
+@AwaitsFix(bugUrl = "https://issues.apache.org/jira/browse/SOLR-8447")
 public class TestDistributedDymReSearcher extends BaseDistributedSearchTestCase {
+  
+  public TestDistributedDymReSearcher() {
+    stress = 0;
+  }
   
   @Override
   public String getSolrHome() {
     return getFile("solr/collection1").getParent();
   }
   
+  @AfterClass
+  public static void afterClass() throws IOException {
+    //h.getCore().getSearcher().get().close();
+    //h.getCore().closeSearcher();
+    //h.getCore().close();
+    //h.close();
+    //SolrIndexSearcher.numCloses.getAndIncrement();
+  }
+  
+  /*@Override
+  public String getSolrHome() {
+    return getFile("solr/collection1").getParent();
+  }*/
+  
   @Test
+  @ShardsFixed(num = 2)
   public void test() throws Exception {
     del("*:*");
     index("id", "1", "foo", "elvis presley");
@@ -41,7 +69,7 @@ public class TestDistributedDymReSearcher extends BaseDistributedSearchTestCase 
     index("id", "12", "foo", "elvis");
     index("id", "13", "foo", "elvis 2");
     commit();
-
+    
     handle.clear();
     handle.put("QTime", SKIPVAL);
     handle.put("timestamp", SKIPVAL);

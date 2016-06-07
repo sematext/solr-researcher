@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <config>
-  <luceneMatchVersion>${tests.luceneMatchVersion:LATEST}</luceneMatchVersion>
+  <luceneMatchVersion>6.0.0</luceneMatchVersion>
   <!-- Set this to 'false' if you want solr to continue working after it has 
        encountered an severe configuration error.  In a production environment, 
        you may want solr to keep working even if one handler is mis-configured.
@@ -9,7 +9,6 @@
        You may also set this to false using by setting the system property:
          -Dsolr.abortOnConfigurationError=false
      -->
-  <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
 
   <!-- Used to specify an alternate directory to hold all index data
        other than the default ./data under the Solr home.
