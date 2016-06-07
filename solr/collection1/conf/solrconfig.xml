@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <config>
-  <luceneMatchVersion>6.0.0</luceneMatchVersion>
+  <luceneMatchVersion>6.0.1</luceneMatchVersion>
   <dataDir>${solr.data.dir:./solr/data}</dataDir>
 
   <!-- SEMATEXT COMMENT : In this example, Dismax handler is using DymReSearcher component. Because of that
