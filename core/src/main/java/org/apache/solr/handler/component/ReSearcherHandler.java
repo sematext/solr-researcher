@@ -20,16 +20,21 @@ import org.apache.solr.common.params.ShardParams;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.common.util.SimpleOrderedMap;
 import org.apache.solr.core.CoreContainer;
+import org.apache.solr.core.SolrCore;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.request.SolrQueryRequestBase;
 import org.apache.solr.response.SolrQueryResponse;
 import org.apache.solr.search.SolrQueryTimeoutImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sematext.solr.handler.component.ReSearcherRequestContext;
 import com.sematext.solr.handler.component.ReSearcherUtils;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,6 +42,8 @@ import java.util.Set;
 
 public class ReSearcherHandler {
 
+  private static final Logger LOG = LoggerFactory.getLogger(SolrCore.class);
+  
   public long handleSuggestionHitsRequest(ReSearcherRequestContext ctx, String query, Set<String> componentNames) throws Exception {
     ModifiableSolrParams params = new ModifiableSolrParams(ctx.getParams());
     params.set(CommonParams.ROWS, "0");
@@ -139,7 +146,15 @@ public class ReSearcherHandler {
   
   private void handleSuggestionRequest(ReSearcherRequestContext ctx, ResponseBuilder rb, List<SearchComponent> components, boolean ignoreOutput) throws Exception {
     
-    ShardHandler shardHandler1 = getAndPrepShardHandler(rb.req, rb, ctx.getShardHandlerFactory());
+    ShardHandler shardHandler1 = null;
+    try {
+      shardHandler1 = getAndPrepShardHandler(rb.req, rb, ctx.getShardHandlerFactory());
+    } catch (Throwable e) {
+      e.printStackTrace();
+      Field field = ResponseBuilder.class.getDeclaredField("isDistrib");
+      LOG.error("isDistrib = " + Modifier.toString(field.getModifiers()));
+      LOG.error("Current Lucene version " + Version.LATEST.toString());
+    }
     
     for (SearchComponent c : components) {
       c.prepare(rb);
