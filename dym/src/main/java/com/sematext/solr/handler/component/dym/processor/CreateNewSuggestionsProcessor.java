@@ -9,12 +9,11 @@
 package com.sematext.solr.handler.component.dym.processor;
 
 import org.apache.solr.common.util.NamedList;
-import org.apache.solr.common.util.SimpleOrderedMap;
+
+import com.sematext.solr.handler.component.SpellcheckerSuggestionProcessor;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import com.sematext.solr.handler.component.SpellcheckerSuggestionProcessor;
 
 public class CreateNewSuggestionsProcessor implements SpellcheckerSuggestionProcessor {
   private String originalQuery;
@@ -22,7 +21,7 @@ public class CreateNewSuggestionsProcessor implements SpellcheckerSuggestionProc
   private int wordEndOffset;
   private Set<String> newSuggestions = new LinkedHashSet<String>();
   
-  public CreateNewSuggestionsProcessor(String originalQueryParam, NamedList suggestionForWord) {
+  public CreateNewSuggestionsProcessor(String originalQueryParam, NamedList<Object> suggestionForWord) {
     originalQuery = originalQueryParam;
     wordEndOffset = (Integer) suggestionForWord.get("endOffset");
     wordStartOffset = (Integer) suggestionForWord.get("startOffset");    
@@ -34,7 +33,7 @@ public class CreateNewSuggestionsProcessor implements SpellcheckerSuggestionProc
   }
 
   @Override
-  public void process(NamedList wordData, String wordName) {
+  public void process(NamedList<Object> wordData, String wordName) {
     String word = (String) wordData.get("word");
 
     StringBuilder collation = new StringBuilder(originalQuery);

@@ -144,6 +144,7 @@ public class ReSearcherHandler {
     return shardHandler;
   }
   
+  @SuppressWarnings({ "deprecation", "unchecked" })
   private void handleSuggestionRequest(ReSearcherRequestContext ctx, ResponseBuilder rb, List<SearchComponent> components, boolean ignoreOutput) throws Exception {
     
     ShardHandler shardHandler1 = null;

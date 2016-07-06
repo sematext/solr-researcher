@@ -24,6 +24,7 @@ import com.sematext.solr.handler.component.AbstractReSearcherComponent;
 
 @SolrTestCaseJ4.SuppressSSL
 public class TestDymReSearcher extends SolrTestCaseJ4 {
+  
   @BeforeClass
   public static void beforeTests() throws Exception {
     // to run from IDE:

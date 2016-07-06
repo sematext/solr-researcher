@@ -8,8 +8,6 @@
  */
 package com.sematext.solr.handler.component.dym;
 
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.util.LuceneTestCase.AwaitsFix;
 import org.apache.lucene.util.LuceneTestCase.Slow;
 import org.apache.solr.BaseDistributedSearchTestCase;
 import org.apache.solr.SolrTestCaseJ4.SuppressSSL;
@@ -17,15 +15,11 @@ import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.common.params.ShardParams;
 import org.apache.solr.common.params.SpellingParams;
 import org.apache.solr.handler.component.SpellCheckComponent;
-import org.apache.solr.search.SolrIndexSearcher;
-import org.junit.AfterClass;
 import org.junit.Test;
-
-import java.io.IOException;
 
 @SuppressSSL
 @Slow
-@AwaitsFix(bugUrl = "https://issues.apache.org/jira/browse/SOLR-8447")
+//@AwaitsFix(bugUrl = "https://issues.apache.org/jira/browse/SOLR-8447")
 public class TestDistributedDymReSearcher extends BaseDistributedSearchTestCase {
   
   public TestDistributedDymReSearcher() {
@@ -37,39 +31,33 @@ public class TestDistributedDymReSearcher extends BaseDistributedSearchTestCase 
     return getFile("solr/collection1").getParent();
   }
   
-  @AfterClass
-  public static void afterClass() throws IOException {
-    //h.getCore().getSearcher().get().close();
-    //h.getCore().closeSearcher();
-    //h.getCore().close();
-    //h.close();
-    //SolrIndexSearcher.numCloses.getAndIncrement();
+  public static void beforeTests() throws Exception {
+    // to run from IDE:
+    // initCore("solr/collection1/conf/solrconfig.xml","solr/collection1/conf/schema.xml");
+    
+    // to build with maven
+    // initCore("solrconfig.xml","schema.xml");
+
+    assertU(adoc("id", "1", "foo", "elvis presley"));
+    assertU(adoc("id", "2", "foo", "bob marley"));
+    assertU(adoc("id", "3", "foo", "bob dylan"));
+    assertU(adoc("id", "4", "foo", "the doors"));
+    assertU(adoc("id", "5", "foo", "bob marley & the wailers"));
+    assertU(adoc("id", "6", "foo", "bono"));
+    assertU(adoc("id", "7", "foo", "bob marley & the wailers 2"));
+    assertU(adoc("id", "8", "foo", "bob marley & the wailers 3"));
+    assertU(adoc("id", "9", "foo", "bono and bob marley 1"));
+    assertU(adoc("id", "10", "foo", "bono and bob marley 2"));
+    assertU(adoc("id", "11", "foo", "bono and bob marley 3"));
+    assertU(adoc("id", "12", "foo", "elvis"));
+    assertU(adoc("id", "13", "foo", "elvis 2"));
+    
+    assertU("commit", BaseDistributedSearchTestCase.commit());
   }
-  
-  /*@Override
-  public String getSolrHome() {
-    return getFile("solr/collection1").getParent();
-  }*/
   
   @Test
   @ShardsFixed(num = 2)
   public void test() throws Exception {
-    del("*:*");
-    index("id", "1", "foo", "elvis presley");
-    index("id", "2", "foo", "bob marley");
-    index("id", "3", "foo", "bob dylan");
-    index("id", "4", "foo", "the doors");
-    index("id", "5", "foo", "bob marley & the wailers");
-    index("id", "6", "foo", "bono");
-    index("id", "7", "foo", "bob marley & the wailers 2");
-    index("id", "8", "foo", "bob marley & the wailers 3");
-    index("id", "9", "foo", "bono and bob marley 1");
-    index("id", "10", "foo", "bono and bob marley 2");
-    index("id", "11", "foo", "bono and bob marley 3");
-    index("id", "12", "foo", "elvis");
-    index("id", "13", "foo", "elvis 2");
-    commit();
-    
     handle.clear();
     handle.put("QTime", SKIPVAL);
     handle.put("timestamp", SKIPVAL);

@@ -24,7 +24,7 @@ public class SuggestionsFoundRatioCalculator {
     
   }
   
-  public boolean isRatioAcceptable(NamedList sug, long originalQueryHits, int spellcheckCount) {
+  public boolean isRatioAcceptable(NamedList<Object> sug, long originalQueryHits, int spellcheckCount) {
     float ratio = calculateRatio(sug, spellcheckCount);
     float ratioToCheck = 0.0f;
     
@@ -42,7 +42,7 @@ public class SuggestionsFoundRatioCalculator {
     return false;
   }
   
-  public static float calculateRatio(NamedList sug, int spellcheckCount) {
+  public static float calculateRatio(NamedList<Object> sug, int spellcheckCount) {
     int numFound = ((Integer) sug.get("numFound")).intValue();
     return ((float) numFound) / ((float) spellcheckCount);
   }

@@ -36,7 +36,7 @@ public class FindMisspelingProcessor implements SpellcheckerSuggestionProcessor 
   }
 
   @Override
-  public void process(NamedList wordData, String wordName) {
+  public void process(NamedList<Object> wordData, String wordName) {
     if (ratioCalculator.isRatioAcceptable(wordData, originalQueryHits, spellcheckCount)) {
       float thisRatio = SuggestionsFoundRatioCalculator.calculateRatio(wordData, spellcheckCount);
       // System.out.println("Suggestion, ratio :" + suggestions.getName(i) + ", " + thisRatio);

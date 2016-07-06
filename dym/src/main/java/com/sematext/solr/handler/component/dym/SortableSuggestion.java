@@ -11,6 +11,7 @@ package com.sematext.solr.handler.component.dym;
 public class SortableSuggestion implements Comparable<SortableSuggestion> {
   private String suggestion;
   private long numHits;
+  @SuppressWarnings("unused")
   private float distance;
   private int sortableScore;
   

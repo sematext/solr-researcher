@@ -31,8 +31,7 @@ public interface SpellcheckerSuggestionProcessor {
    *                    incorrect words, nameValue will contain name of incorrect word)
    * can be extracted
    */
-  @SuppressWarnings("rawtypes")
-  void process(NamedList wordData, String nameValue);
+  void process(NamedList<Object> wordData, String nameValue);
   
   /**
    * Provides a to perform some logic after processing of all suggestions was finished.

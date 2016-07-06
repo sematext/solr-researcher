@@ -18,8 +18,7 @@ public class SuggestionRatioProcessor implements SpellcheckerSuggestionProcessor
   private int spellcheckCount;
   private SuggestionsFoundRatioCalculator ratioCalculator;
   private Float highestRatio;
-  @SuppressWarnings("rawtypes")
-  private NamedList suggestionWithHighestRatio;
+  private NamedList<Object> suggestionWithHighestRatio;
   private boolean stopIterating = false;
   
   public SuggestionRatioProcessor(long originalQueryHits, int spellcheckCount, SuggestionsFoundRatioCalculator ratioCalculator, Float highestRatio) {
@@ -35,8 +34,7 @@ public class SuggestionRatioProcessor implements SpellcheckerSuggestionProcessor
   }
 
   @Override
-  @SuppressWarnings("rawtypes")
-  public void process(NamedList wordData, String wordName) {
+  public void process(NamedList<Object> wordData, String wordName) {
     if (stopIterating) {
       return;
     }
@@ -50,7 +48,7 @@ public class SuggestionRatioProcessor implements SpellcheckerSuggestionProcessor
           return;
         }
         else {
-        }            
+        }
       }
       else {
         suggestionWithHighestRatio = wordData;
@@ -60,8 +58,7 @@ public class SuggestionRatioProcessor implements SpellcheckerSuggestionProcessor
     }
   }
 
-  @SuppressWarnings("rawtypes")
-  public NamedList getSuggestionWithHighestRatio() {
+  public NamedList<Object> getSuggestionWithHighestRatio() {
     return suggestionWithHighestRatio;
   }
 }

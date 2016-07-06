@@ -16,6 +16,7 @@ public class FindTopFrequencyProcessor implements SpellcheckerSuggestionProcesso
   private double topFrequency = 0.0d;
 
   @Override
+  @SuppressWarnings("rawtypes")
   public void process(NamedList wordData, String wordName) {
     double sugFreq = Math.sqrt(((Integer) wordData.get("freq")).doubleValue());
     if (sugFreq > topFrequency) {

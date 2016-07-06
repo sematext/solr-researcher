@@ -147,6 +147,7 @@ public class ReSearcherUtils {
    * @param word term for which suggestions are being processed
    * @param processor instance of processor which will handle all suggestions for word
    */
+  @SuppressWarnings("unchecked")
   public static void iterateOverSpellcheckerSuggestionsForAllIncorrectWords(NamedList suggestions, SpellcheckerSuggestionProcessor processor) {
     if (suggestions == null || processor == null) {
       return;
@@ -221,7 +222,7 @@ public class ReSearcherUtils {
     try {
       // first tokenize words and treat each quote as a separate token
       Map<String,String> args = new HashMap<String, String>();
-      args.put(WhitespaceTokenizerFactory.LUCENE_MATCH_VERSION_PARAM, Version.LUCENE_6_0_0.toString());
+      args.put(WhitespaceTokenizerFactory.LUCENE_MATCH_VERSION_PARAM, Version.LUCENE_6_0_1.toString());
       WhitespaceTokenizerFactory f = new WhitespaceTokenizerFactory(args);
       
       WhitespaceTokenizer s = (WhitespaceTokenizer)f.create(AttributeFactory.DEFAULT_ATTRIBUTE_FACTORY);
