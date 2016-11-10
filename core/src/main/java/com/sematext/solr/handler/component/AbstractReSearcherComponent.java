@@ -119,7 +119,7 @@ public abstract class AbstractReSearcherComponent extends SearchComponent implem
   /**
    * Alway disable ReSearcher flag for distributed request
    * 
-   * @param sreq
+   * @param rb
    */
 
   @Override
