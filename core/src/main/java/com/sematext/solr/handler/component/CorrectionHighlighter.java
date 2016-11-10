@@ -24,6 +24,13 @@ public class CorrectionHighlighter {
    * highlighting, for instance String "b"). The same applies for replaced words, but parameter for that is
    * highlightingTagReplaced. In case removed quotes shouldn't be highlighted, parameter ignoreRemovedQuotes should be
    * set to true (this is the most common case). Otherwise, set it to false.
+   * 
+   * @param originalQuery .
+   * @param correctedQuery .
+   * @param highlightingTagRemoved .
+   * @param highlightingTagReplaced .
+   * @param ignoreRemovedQuotes .
+   * @return
    */
   public static String highlightCorrections(String originalQuery, String correctedQuery, String highlightingTagRemoved, String highlightingTagReplaced, boolean ignoreRemovedQuotes) {
     if (originalQuery == null || correctedQuery == null || originalQuery.trim().equals("") || correctedQuery.trim().equals("")) {

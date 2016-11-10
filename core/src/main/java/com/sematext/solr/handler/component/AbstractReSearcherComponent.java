@@ -119,9 +119,8 @@ public abstract class AbstractReSearcherComponent extends SearchComponent implem
   /**
    * Alway disable ReSearcher flag for distributed request
    * 
-   * @param rb
+   * @param rb .
    */
-
   @Override
   public void process(ResponseBuilder rb) throws IOException {
     if (!checkComponentShouldProcess(rb)) {
