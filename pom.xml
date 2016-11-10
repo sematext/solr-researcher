@@ -35,9 +35,6 @@
     <module>relaxer</module>
   </modules>
 
-  <!-- NOTE: INSTALL TO LOCAL MVN REPO USING: mvn install:install-file -Dfile=target/st-ReSearcher-1.0-SNAPSHOT.jar 
-    -DgroupId=com.sematext.solr -DartifactId=st-ReSearcher -Dversion=1.0 -Dpackaging=jar -->
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -47,16 +44,8 @@
     <solr.version>6.0.1</solr.version>
   </properties>
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
-
   <build>
     <plugins>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
@@ -184,4 +173,15 @@
     </dependency>
   </dependencies>
 
+  <distributionManagement>
+    <repository>
+      <id>oss</id>
+      <url>https://oss.sonatype.org/content/repositories/releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+  
 </project>
