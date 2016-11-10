@@ -30,7 +30,7 @@ public class CorrectionHighlighter {
    * @param highlightingTagRemoved .
    * @param highlightingTagReplaced .
    * @param ignoreRemovedQuotes .
-   * @return
+   * @return .
    */
   public static String highlightCorrections(String originalQuery, String correctedQuery, String highlightingTagRemoved, String highlightingTagReplaced, boolean ignoreRemovedQuotes) {
     if (originalQuery == null || correctedQuery == null || originalQuery.trim().equals("") || correctedQuery.trim().equals("")) {

@@ -50,8 +50,8 @@ public class ReSearcherUtils {
   /**
    * Returns spellchecker's suggestions from original response. In case there are no suggestions, returns null.
    * 
-   * @param rb
-   * @return
+   * @param rb .
+   * @return .
    */
   public static NamedList extractSpellcheckerSuggestions(ResponseBuilder rb) {
     if (rb.rsp.getValues().get("spellcheck") == null) {
@@ -64,7 +64,7 @@ public class ReSearcherUtils {
   /**
    * Extract spellchecker's collation from original response or null if there was no collation.
    * @param rb .
-   * @return
+   * @return .
    */
   public static String extractSpellcheckerCollation(ResponseBuilder rb) {
     if (rb.rsp.getValues().get("spellcheck") != null) {
@@ -180,7 +180,7 @@ public class ReSearcherUtils {
    * only q value is changed. Other similar methods will not be provided, since changed q is the most used situation.
    * 
    * @param newQueryValue .
-   * @return
+   * @return .
    */
   public static Map<String, List<String>> createParametersToReplaceMapWhenOnlyQueryChanged(String newQueryValue) {
     Map<String, List<String>> parametersToReplace = new HashMap<String, List<String>>();
@@ -195,7 +195,7 @@ public class ReSearcherUtils {
    * Utility method for creating map which should be passed into ReSearcherUtils.customPrepare .
    * 
    * @param str .
-   * @return
+   * @return .
    */
   public static Map<String, List<String>> createParameters(String... str) {
     Map<String, List<String>> parameters = new HashMap<String, List<String>>();
