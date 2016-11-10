@@ -144,7 +144,6 @@ public class ReSearcherUtils {
    * word, that is the logic which SpellcheckerSuggestionProcessor should take care off.
    * 
    * @param suggestions list of all suggestions, can be extracted with method .extractSpellcheckerSuggestions().
-   * @param word term for which suggestions are being processed
    * @param processor instance of processor which will handle all suggestions for word
    */
   @SuppressWarnings("unchecked")
