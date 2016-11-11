@@ -1,13 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.sematext.solr</groupId>
   <artifactId>st-ReSearcher-parent</artifactId>
-  <version>1.12.6.0.1-SNAPSHOT</version>
+  <version>1.12.6.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>ReSearcher Parent</name>
-  <description>>Parent module for Solr ReSearcher</description>
+  <description>&gt;Parent module for Solr ReSearcher</description>
   <url>http://sematext.com/open-source/index.html</url>
 
   <licenses>
@@ -22,6 +21,7 @@
     <connection>scm:git:git@github.com:sematext/solr-researcher.git</connection>
     <developerConnection>scm:git:git@github.com:sematext/solr-researcher.git</developerConnection>
     <url>https://github.com/sematext/solr-researcher</url>
+    <tag>HEAD</tag>
   </scm>
 
   <organization>
