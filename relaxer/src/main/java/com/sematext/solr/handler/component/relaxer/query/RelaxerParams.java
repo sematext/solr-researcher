@@ -19,7 +19,7 @@ public interface RelaxerParams {
 
   /**
    * Use the value for this parameter as the query to relaxer.
-   * <p/>
+   * <p>
    * This parameter is <b>optional</b>. If absent, then the q parameter is used.
    */
   static final String QUERY_RELAXER_Q = QUERY_RELAXER_PREFIX + "q";

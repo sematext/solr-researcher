@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  * 
  * Extracts user query for Edismax query using regex. This class can handle subquery with pattern q={!type=dismax
  * qf=myfield v='solr rocks'}. If there are multiple subqueries we can select one subquery by adding localparam relax=on or
- * by specifying a field using URL param &relax.q=[field_name].
+ * by specifying a field using URL param relax.q=[field_name].
  * 
  * @author sematext, http://www.sematext.com/
  */
