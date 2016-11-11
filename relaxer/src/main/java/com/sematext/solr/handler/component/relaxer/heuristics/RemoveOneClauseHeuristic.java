@@ -23,6 +23,7 @@ import com.sematext.solr.handler.component.relaxer.MMRelaxerSuggestion;
 import com.sematext.solr.handler.component.relaxer.QueryRelaxerHeuristic;
 import com.sematext.solr.handler.component.relaxer.QueryRelaxerSuggestion;
 import com.sematext.solr.handler.component.relaxer.RelaxerSuggestion;
+import com.sematext.solr.handler.component.relaxer.heuristics.regular.RemoveOneTerm;
 import com.sematext.solr.handler.component.relaxer.query.Clause;
 import com.sematext.solr.handler.component.relaxer.query.EdismaxQueryConverter;
 import com.sematext.solr.handler.component.relaxer.query.QueryConverter;
@@ -32,7 +33,7 @@ import com.sematext.solr.handler.component.relaxer.query.UserQueryExtractor;
 
 /**
  * 
- * Relaxer heuristic which works similar to {@link RemoveOneToken} heuristic on regular queries. 
+ * Relaxer heuristic which works similar to {@link RemoveOneTerm} heuristic on regular queries. 
  * It will consider a phrase or term as a clause. This heuristic also understands Boolean operators
  * AND, OR, NOT.
  *
