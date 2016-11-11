@@ -27,9 +27,8 @@ public abstract class QueryRelaxerHeuristic {
   /**
    * Returns a set of suggestions. If no suggestions were created, it should return null or empty set.
    * 
-   * @param String
-   * @param originalQueryHits
-   * @return
+   * @param req originalQueryHits
+   * @return .
    */
   public abstract Set<RelaxerSuggestion> createSuggestions(SolrQueryRequest req);
 
