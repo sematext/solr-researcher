@@ -28,6 +28,14 @@
     <name>Sematext</name>
     <url>http://sematext.com</url>
   </organization>
+  
+  <developers>
+    <developer>
+      <id>nmtien</id>
+      <name>Nguyen Manh Tien</name>
+      <email>tien.nguyenmanh@sematext.com</email>
+    </developer>
+  </developers>
 
   <modules>
     <module>core</module>
