@@ -111,8 +111,13 @@ public class ReSearcherHandler {
   private ShardHandler getAndPrepShardHandler(SolrQueryRequest req, ResponseBuilder rb, ShardHandlerFactory shardHandlerFactory) {
     ShardHandler shardHandler = null;
 
-    CoreContainer cc = req.getCore().getCoreDescriptor().getCoreContainer();
-    boolean isZkAware = cc.isZooKeeperAware();
+    boolean isZkAware = false;
+    CoreContainer cc = null;
+    if (req.getCore() != null) {
+      cc = req.getCore().getCoreDescriptor().getCoreContainer();
+      isZkAware = cc.isZooKeeperAware();
+    } 
+    
     rb.isDistrib = req.getParams().getBool("distrib", isZkAware);
     if (!rb.isDistrib) {
       // for back compat, a shards param with URLs like localhost:8983/solr will mean that this
@@ -157,8 +162,10 @@ public class ReSearcherHandler {
       LOG.error("Current Lucene version " + Version.LATEST.toString());
     }
     
-    for (SearchComponent c : components) {
-      c.prepare(rb);
+    if (components != null) {
+      for (SearchComponent c : components) {
+        c.prepare(rb);
+      }
     }
 
     if (!rb.isDistrib) {
@@ -167,8 +174,10 @@ public class ReSearcherHandler {
         SolrQueryTimeoutImpl.set(timeAllowed);
       }
       try {
-        for (SearchComponent c : components) {
-          c.process(rb);
+        if (components != null) {
+          for (SearchComponent c : components) {
+            c.process(rb);
+          }
         }
       } finally {
         SolrQueryTimeoutImpl.reset();
@@ -185,8 +194,10 @@ public class ReSearcherHandler {
         nextStage = ResponseBuilder.STAGE_DONE;
         
         // the next stage is the minimum of what all components report
-        for (SearchComponent c : components) {
-          nextStage = Math.min(nextStage, c.distributedProcess(rb));
+        if (components != null) {
+          for (SearchComponent c : components) {
+            nextStage = Math.min(nextStage, c.distributedProcess(rb));
+          }
         }
         // check the outgoing queue and send requests
         while (rb.outgoing.size() > 0) {
@@ -260,14 +271,18 @@ public class ReSearcherHandler {
             rb.finished.add(srsp.getShardRequest());
 
             // let the components see the responses to the request
-            for (SearchComponent c : components) {
-              c.handleResponses(rb, srsp.getShardRequest());
+            if (components != null) {
+              for (SearchComponent c : components) {
+                c.handleResponses(rb, srsp.getShardRequest());
+              }
             }
           }
         }
         
-        for (SearchComponent c : components) {
-          c.finishStage(rb);
+        if (components != null) {
+          for (SearchComponent c : components) {
+            c.finishStage(rb);
+          }
         }
         // we are done when the next stage is MAX_VALUE
       } while (nextStage != Integer.MAX_VALUE);

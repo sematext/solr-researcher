@@ -3,7 +3,7 @@
 
   <groupId>com.sematext.solr</groupId>
   <artifactId>st-ReSearcher-parent</artifactId>
-  <version>1.12.6.0.2-SNAPSHOT</version>
+  <version>1.12.6.3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>ReSearcher Parent</name>
   <description>&gt;Parent module for Solr ReSearcher</description>
@@ -49,7 +49,8 @@
     <maven.compile.source>1.8</maven.compile.source>
     <maven.compile.target>1.8</maven.compile.target>
     <junit.version>4.12</junit.version>
-    <solr.version>6.0.1</solr.version>
+    <solr.version>6.3.0</solr.version>
+    <logback.version>1.1.7</logback.version>
   </properties>
 
   <build>
@@ -171,6 +172,12 @@
           <artifactId>velocity-tools</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
     </dependency>
 
     <dependency>
