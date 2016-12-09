@@ -2,13 +2,13 @@
 
 # solr-researcher
 
-The Solr ReSearcher has Solr components that can be used to improve user's search experience. 
+The Solr ReSearcher project has Solr components that can be used to improve user's search experience.
 
-### Project Layout
-Currently, the Solr ReSearcher has two modules:
-* core – Common classes for other researcher components
-* relaxer – Query Relaxer is a Solr component that improves search experience. It executes alternative queries when it detects that original query produced poor results or no results at all due to being too restrictive. It transparently returns better search results to the client without the client having to restructure the query and send additional requests to Solr over the wire and re-examine the results.
-* dym – Solr DYM ReSearcher (aka Did You Mean ReSearcher) is a Solr component that improves search experience. It executes alternative queries when it detects that original queries produced poor results or no results at all due to spelling mistakes or typos. It transparently returns better search results to the client.
+### Components
+Currently, the Solr ReSearcher has two modules, in addition to its core:
+* **core** – Common classes for other ReSearcher components
+* **relaxer** – Query Relaxer is a Solr component that executes alternative queries when it detects that original query produced poor results or no results at all due to being too restrictive. It transparently returns better search results to the client without the client having to restructure the query and send additional requests to Solr over the wire and re-examine the results.
+* **dym** – Solr DYM ReSearcher (aka Did You Mean ReSearcher) is a Solr component that executes alternative queries when it detects that original queries produced poor results or no results at all due to spelling mistakes or typos. It transparently returns better search results to the client.
 
 ### Usage
 Check usage for each component in their own README.md
@@ -17,13 +17,12 @@ Check usage for each component in their own README.md
 
 
 ### Solr Version
-5.2.X
+5.2.X (PRs for newever versions welcome!)
 
 ### Maven Artifacts
-Maven artifacts of ActionGenerator project are published at 
-https://oss.sonatype.org/content/repositories/snapshots/
+Maven artifacts are published under https://oss.sonatype.org/content/repositories/snapshots/com/sematext/
 
-To use Solr ReSearcher you should add the following dependency to your project:
+To use Solr ReSearcher add the following dependency to your project:
 
 ```xml
 <dependency>
@@ -57,4 +56,6 @@ $ mvn clean package
 Solr ReSearcher is released under Apache License, Version 2.0
 
 ## Contact
-For any questions ping @sematext, @nmtien.
+* For questions ping [@sematext](http://twitter.com/sematext)
+* For support visit http://sematext.com
+* Like working with Solr or Elasticsearch?  Please get in touch - we're always looking for good engineers, consultants, trainers, and support engineers.
