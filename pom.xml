@@ -3,7 +3,7 @@
 
   <groupId>com.sematext.solr</groupId>
   <artifactId>st-ReSearcher-parent</artifactId>
-  <version>1.12.6.3.0</version>
+  <version>1.12.6.3.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>ReSearcher Parent</name>
   <description>Parent module for Solr ReSearcher</description>
