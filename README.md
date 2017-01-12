@@ -26,7 +26,7 @@ Check usage for each component in their own README.md
     <td>5.2.0</td>
   </tr>
   <tr>
-    <td>6.0.1-SNAPSHOT</td>
+    <td>6.0.1</td>
     <td>6.0.1</td>
   </tr>
   <tr>
