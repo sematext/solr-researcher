@@ -16,8 +16,21 @@ Check usage for each component in their own README.md
 * [Solr DYM ReSearcher](https://github.com/sematext/solr-researcher/tree/master/dym)
 
 
-### Solr Version
-5.2.X
+### Support Matrix
+<table>
+  <tr>
+    <th>solr-researcher</th>
+    <th>solr</th>
+  </tr>
+  <tr>
+    <td>1.12.5.2.0</td>
+    <td>5.2.0</td>
+  </tr>
+  <tr>
+    <td>6.3.0-SNAPSHOT</td>
+    <td>6.3.0</td>
+  </tr>
+</table>
 
 ### Maven Artifacts
 Maven artifacts of ActionGenerator project are published at 
@@ -29,7 +42,7 @@ To use Solr ReSearcher you should add the following dependency to your project:
 <dependency>
   <groupId>com.sematext.solr</groupId>
   <artifactId>st-ReSearcher-relaxer</artifactId>
-  <version>1.12.5.2.0-SNAPSHOT</version>
+  <version>1.12.6.3.0-SNAPSHOT</version>
 </dependency>`
 ```
 or
@@ -38,7 +51,7 @@ or
 <dependency>
   <groupId>com.sematext.solr</groupId>
   <artifactId>st-ReSearcher-dym</artifactId>
-  <version>1.12.5.2.0-SNAPSHOT</version>
+  <version>1.12.6.3.0-SNAPSHOT</version>
 </dependency>`
 ```
 
