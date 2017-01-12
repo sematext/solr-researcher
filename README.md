@@ -1,11 +1,11 @@
 [![Build Status](https://travis-ci.org/sematext/solr-researcher.svg?branch=master)](https://travis-ci.org/sematext/solr-researcher)
 
-# solr-researcher
+# Solr ReSearcher
 
 The Solr ReSearcher project has Solr components that can be used to improve user's search experience.
 
 ### Components
-Currently, the Solr ReSearcher has two modules, in addition to its core:
+Currently, the Solr ReSearcher has two modules plus core:
 * **core** – Common classes for other ReSearcher components
 * **relaxer** – Query Relaxer is a Solr component that executes alternative queries when it detects that original query produced poor results or no results at all due to being too restrictive. It transparently returns better search results to the client without the client having to restructure the query and send additional requests to Solr over the wire and re-examine the results.
 * **dym** – Solr DYM ReSearcher (aka Did You Mean ReSearcher) is a Solr component that executes alternative queries when it detects that original queries produced poor results or no results at all due to spelling mistakes or typos. It transparently returns better search results to the client.
@@ -30,30 +30,29 @@ Check usage for each component in their own README.md
     <td>6.0.1</td>
   </tr>
   <tr>
-    <td>1.12.6.3.0-SNAPSHOT</td>
+    <td>1.12.6.3.0</td>
     <td>6.3.0</td>
   </tr>
 </table>
 
 ### Maven Artifacts
-Maven artifacts are published under https://oss.sonatype.org/content/repositories/snapshots/com/sematext/
+Maven artifacts are published under https://oss.sonatype.org/content/repositories/release/com/sematext/
 
-To use Solr ReSearcher add the following dependency to your project:
+To use Solr ReSearcher add the following dependencies to your project:
 
 ```xml
 <dependency>
   <groupId>com.sematext.solr</groupId>
   <artifactId>st-ReSearcher-relaxer</artifactId>
-  <version>1.12.6.3.0-SNAPSHOT</version>
+  <version>1.12.6.3.0</version>
 </dependency>`
 ```
-or
 
 ```xml
 <dependency>
   <groupId>com.sematext.solr</groupId>
   <artifactId>st-ReSearcher-dym</artifactId>
-  <version>1.12.6.3.0-SNAPSHOT</version>
+  <version>1.12.6.3.0</version>
 </dependency>`
 ```
 
