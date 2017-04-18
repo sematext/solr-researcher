@@ -237,7 +237,7 @@ public class ReSearcherHandler {
               } else {
                 params.set(CommonParams.QT, shardQt);
               }
-              shardHandler1.submit(sreq, shard, params, rb.preferredHostAddress);
+              shardHandler1.submit(sreq, shard, params);
             }
           }
 
