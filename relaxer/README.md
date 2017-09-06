@@ -102,7 +102,7 @@ Results for best suggestion are returned like in field `relaxer_response`:
 ```xml
 <arr name="relaxer_suggestions">
   <lst>
-    <result name=”relaxer_response” numFound="2334" start="0"> 
+    <result name="relaxer_response" numFound="2334" start="0"> 
       <doc>
         <str name="foo">Shine on you crazy diamond</str>
   ......
