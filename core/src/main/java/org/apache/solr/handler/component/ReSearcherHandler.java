@@ -114,7 +114,7 @@ public class ReSearcherHandler {
     boolean isZkAware = false;
     CoreContainer cc = null;
     if (req.getCore() != null) {
-      cc = req.getCore().getCoreDescriptor().getCoreContainer();
+      cc = req.getCore().getCoreContainer();
       isZkAware = cc.isZooKeeperAware();
     } 
     

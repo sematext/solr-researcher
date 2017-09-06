@@ -21,10 +21,14 @@ Check usage for each component in their own README.md
     <th>solr-researcher</th>
     <th>solr</th>
   </tr>
-   <tr>
+  <tr>
+      <td>1.12.6.6.0</td>
+      <td>6.6.0</td>
+  </tr>
+  <tr>
       <td>1.12.6.5.1</td>
       <td>6.5.1</td>
-    </tr>
+  </tr>
   <tr>
     <td>1.12.5.2.0</td>
     <td>5.2.0</td>
@@ -48,16 +52,16 @@ To use Solr ReSearcher add the following dependencies to your project:
 <dependency>
   <groupId>com.sematext.solr</groupId>
   <artifactId>st-ReSearcher-relaxer</artifactId>
-  <version>1.12.6.5.1</version>
-</dependency>`
+  <version>1.12.6.6.0</version>
+</dependency>
 ```
 
 ```xml
 <dependency>
   <groupId>com.sematext.solr</groupId>
   <artifactId>st-ReSearcher-dym</artifactId>
-  <version>1.12.6.5.1</version>
-</dependency>`
+  <version>1.12.6.6.0</version>
+</dependency>
 ```
 
 ### Continuous Integration
