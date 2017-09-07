@@ -3,7 +3,7 @@
 
   <groupId>com.sematext.solr</groupId>
   <artifactId>st-ReSearcher-parent</artifactId>
-  <version>1.12.6.6.0</version>
+  <version>1.12.6.6.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>ReSearcher Parent</name>
   <description>Parent module for Solr ReSearcher</description>
@@ -21,7 +21,7 @@
     <connection>scm:git:git@github.com:sematext/solr-researcher.git</connection>
     <developerConnection>scm:git:git@github.com:sematext/solr-researcher.git</developerConnection>
     <url>https://github.com/sematext/solr-researcher</url>
-    <tag>st-ReSearcher-parent-1.12.6.6.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <organization>
