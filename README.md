@@ -44,7 +44,7 @@ Check usage for each component in their own README.md
 </table>
 
 ### Maven Artifacts
-Maven artifacts are published under https://oss.sonatype.org/content/repositories/release/com/sematext/
+Maven artifacts are published under https://oss.sonatype.org/content/repositories/releases/com/sematext/
 
 To use Solr ReSearcher add the following dependencies to your project:
 
