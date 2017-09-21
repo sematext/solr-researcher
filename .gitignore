@@ -14,3 +14,4 @@ hs_err_pid*
 /target/
 /st-ReSearcher-parent.iml
 /.idea/
+.settings/
