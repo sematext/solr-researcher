@@ -68,8 +68,8 @@ public class ReSearcherUtils {
    */
   public static String extractSpellcheckerCollation(ResponseBuilder rb) {
     if (rb.rsp.getValues().get("spellcheck") != null) {
-      if (((SimpleOrderedMap) rb.rsp.getValues().get("spellcheck")).get("suggestions") != null) {
-        return (String) ((NamedList) ((SimpleOrderedMap) rb.rsp.getValues().get("spellcheck")).get("suggestions")).get("collation");
+      if (((SimpleOrderedMap) rb.rsp.getValues().get("spellcheck")).get("collations") != null) {
+        return (String) (((NamedList) ((SimpleOrderedMap) rb.rsp.getValues().get("spellcheck")).get("collations")).get("collation"));
       }
     }
    

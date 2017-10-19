@@ -356,6 +356,11 @@ public class DymReSearcher extends AbstractReSearcherComponent {
     return "DymReSeacher";
   }
 
+  @Override
+  public String getSource() {
+    return "$URL: http://svn.sematext.com/sematext_ext/st-ReSearcher/trunk/dym/src/java/org/apache/solr/handler/component/dym/DymReseacher.java $";
+  }
+
   @SuppressWarnings("rawtypes")
   private Set<String> createSuggestions(ResponseBuilder rb, NamedList suggestions,
       SuggestionsFoundRatioCalculator ratioCalc, int spellcheckCount, long originalQueryHits, Float highestRatio) {
@@ -373,7 +378,7 @@ public class DymReSearcher extends AbstractReSearcherComponent {
       newSuggestions = newSuggestionsProcessor.getNewSuggestions();
     }
 
-    if (!ignoreCollation) {
+    if (ignoreCollation == false) {
       newSuggestions.add((String) suggestions.get("collation"));
     }
 
