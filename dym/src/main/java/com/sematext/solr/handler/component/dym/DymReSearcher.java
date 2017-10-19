@@ -10,6 +10,7 @@ package com.sematext.solr.handler.component.dym;
 
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.util.NamedList;
+import org.apache.solr.common.util.SimpleOrderedMap;
 import org.apache.solr.handler.component.ResponseBuilder;
 import org.apache.solr.handler.component.SpellCheckComponent;
 import org.apache.solr.response.SolrQueryResponse;
@@ -356,11 +357,6 @@ public class DymReSearcher extends AbstractReSearcherComponent {
     return "DymReSeacher";
   }
 
-  @Override
-  public String getSource() {
-    return "$URL: http://svn.sematext.com/sematext_ext/st-ReSearcher/trunk/dym/src/java/org/apache/solr/handler/component/dym/DymReseacher.java $";
-  }
-
   @SuppressWarnings("rawtypes")
   private Set<String> createSuggestions(ResponseBuilder rb, NamedList suggestions,
       SuggestionsFoundRatioCalculator ratioCalc, int spellcheckCount, long originalQueryHits, Float highestRatio) {
@@ -379,7 +375,12 @@ public class DymReSearcher extends AbstractReSearcherComponent {
     }
 
     if (ignoreCollation == false) {
-      newSuggestions.add((String) suggestions.get("collation"));
+      //newSuggestions.add((String) suggestions.get("collation"));
+        if (rb.rsp.getValues().get("spellcheck") != null) {
+            if (((SimpleOrderedMap) rb.rsp.getValues().get("spellcheck")).get("collations") != null) {
+                newSuggestions.add((String) (((NamedList) ((SimpleOrderedMap) rb.rsp.getValues().get("spellcheck")).get("collations")).get("collation")));
+            }
+        }
     }
 
     return newSuggestions;
