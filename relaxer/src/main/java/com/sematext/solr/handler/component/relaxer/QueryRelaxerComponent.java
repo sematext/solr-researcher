@@ -285,11 +285,6 @@ public final class QueryRelaxerComponent extends AbstractReSearcherComponent {
     return "Relaxer";
   }
 
-  @Override
-  public String getSource() {
-    return "$URL: http://svn.sematext.com/sematext_ext/st-ReSearcher/trunk/relaxer/src/java/org/apache/solr/handler/component/relaxer/Relaxer.java $";
-  }
-  
   @SuppressWarnings("rawtypes")
   private void loadHeuristic(List<QueryRelaxerHeuristic> heuristics, String heur) {
     try {

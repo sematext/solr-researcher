@@ -46,25 +46,29 @@ public class TestRemoveOneClauseHeuristic extends SolrTestCaseJ4 {
 
   @Test
   public void testCreateSuggestions() {
-    Set<RelaxerSuggestion> sugs = heuristic.createSuggestions(req(CommonParams.Q, "foo AND bar"));
+    Set<RelaxerSuggestion> sugs = heuristic.createSuggestions(
+            req(CommonParams.Q, "foo AND bar", CommonParams.DF, "foo"));
     verify(sugs, "bar", "foo");
   }
 
   @Test
   public void testCreateSuggestions2() {
-    Set<RelaxerSuggestion> sugs = heuristic.createSuggestions(req(CommonParams.Q, "foo OR bar"));
+    Set<RelaxerSuggestion> sugs = heuristic.createSuggestions(
+            req(CommonParams.Q, "foo OR bar", CommonParams.DF, "foo"));
     verify(sugs, "bar", "foo");
   }
 
   @Test
   public void testCreateSuggestions3() {
-    Set<RelaxerSuggestion> sugs = heuristic.createSuggestions(req(CommonParams.Q, "foo NOT bar"));
+    Set<RelaxerSuggestion> sugs = heuristic.createSuggestions(
+            req(CommonParams.Q, "foo NOT bar", CommonParams.DF, "foo"));
     verify(sugs, "NOT bar", "foo");
   }
 
   @Test
   public void testCreateSuggestions4() {
-    Set<RelaxerSuggestion> sugs = heuristic.createSuggestions(req(CommonParams.Q, "some \"quoted query\""));
+    Set<RelaxerSuggestion> sugs = heuristic.createSuggestions(
+            req(CommonParams.Q, "some \"quoted query\"", CommonParams.DF, "foo"));
     verify(sugs, "\"quoted query\"", "some");
   }
 
@@ -72,7 +76,8 @@ public class TestRemoveOneClauseHeuristic extends SolrTestCaseJ4 {
   public void testCreateSuggestionsCJK() {
     Map<Pattern, Analyzer> fieldAnalyzerMaps = createCJKAnalyzer();
     heuristic.setFieldAnalyzerMaps(fieldAnalyzerMaps);
-    Set<RelaxerSuggestion> sugs = heuristic.createSuggestions(req(CommonParams.Q, "fooあい", CommonParams.DF, "cjk"));
+    Set<RelaxerSuggestion> sugs = heuristic.createSuggestions(
+            req(CommonParams.Q, "fooあい", CommonParams.DF, "cjk"));
     verify(sugs, "あい", "foo");
   }
 
@@ -96,13 +101,15 @@ public class TestRemoveOneClauseHeuristic extends SolrTestCaseJ4 {
 
   @Test
   public void testCreateSuggestionsOneTerm() {
-    Set<RelaxerSuggestion> sugs = heuristic.createSuggestions(req(CommonParams.Q, "foo"));
+    Set<RelaxerSuggestion> sugs = heuristic.createSuggestions(
+            req(CommonParams.Q, "foo", CommonParams.DF, "foo"));
     assertNull(sugs);
   }
 
   @Test
   public void testCreateSuggestionsOnePhrase() {
-    Set<RelaxerSuggestion> sugs = heuristic.createSuggestions(req(CommonParams.Q, "\"foo bar\""));
+    Set<RelaxerSuggestion> sugs = heuristic.createSuggestions(
+            req(CommonParams.Q, "\"foo bar\"", CommonParams.DF, "foo"));
     assertNull(sugs);
   }
 

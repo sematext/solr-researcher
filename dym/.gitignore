@@ -1,5 +1,2 @@
-/target/
-/.classpath
-/.project
-/.settings/
-/st-ReSearcher-dym.iml
+target/
+st-ReSearcher-dym.iml

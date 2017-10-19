@@ -2,8 +2,6 @@
 <!-- Solr managed schema - automatically generated - DO NOT EDIT -->
 <schema name="example" version="1.2">
   <uniqueKey>id</uniqueKey>
-  <defaultSearchField>foo</defaultSearchField>
-  <solrQueryParser defaultOperator="OR"/>
   <fieldType name="alphaOnlySort" class="solr.TextField" omitNorms="true" sortMissingLast="true">
     <analyzer>
       <tokenizer class="solr.KeywordTokenizerFactory"/>

@@ -1,5 +1,2 @@
-/target/
-/.settings/
-/.classpath
-/.project
-/st-ReSearcher-relaxer.iml
+target/
+st-ReSearcher-relaxer.iml

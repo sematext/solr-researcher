@@ -225,11 +225,11 @@ public class ReSearcherHandler {
              // for distributed queries that don't include shards.qt, use the original path
                 // as the default but operators need to update their luceneMatchVersion to enable
                 // this behavior since it did not work this way prior to 5.1
-                if (rb.req.getCore().getSolrConfig().luceneMatchVersion.onOrAfter(Version.LUCENE_5_1_0)) {
+                if (rb.req.getCore().getSolrConfig().luceneMatchVersion.onOrAfter(Version.LUCENE_6_0_0)) {
                   String reqPath = (String) rb.req.getContext().get(PATH);
                   if (!"/select".equals(reqPath)) {
                     params.set(CommonParams.QT, reqPath);
-                  } // else if path is /select, then the qt gets passed thru if set
+                  } // else if path is /select, then the qt gets passed through if set
                 } else {
                   // this is the pre-5.1 behavior, which translates to sending the shard request to /select
                   params.remove(CommonParams.QT);

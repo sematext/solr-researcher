@@ -53,9 +53,4 @@ public class DummyAbstractReSearcherComponent extends AbstractReSearcherComponen
     return null;
   }
 
-  @Override
-  public String getSource() {
-    // TODO Auto-generated method stub
-    return null;
-  }
 }
