@@ -96,7 +96,7 @@ public abstract class AbstractReSearcherComponent extends SearchComponent implem
     queryOnlyComponents = new ArrayList<SearchComponent>();
     queryOnlyComponents.add(core.getSearchComponent("query"));
     if (shfInfo == null) {
-      shardHandlerFactory = core.getCoreDescriptor().getCoreContainer().getShardHandlerFactory();
+      shardHandlerFactory = core.getCoreContainer().getShardHandlerFactory();
     } else {
       shardHandlerFactory = core.createInitInstance(shfInfo, ShardHandlerFactory.class, null, null);
       core.addCloseHook(new CloseHook() {
